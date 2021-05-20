@@ -1,0 +1,75 @@
+@import "~antd/dist/antd.compact.css";
+
+* {
+}
+
+.container {
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  align-content: center;
+  display: block;
+  justify-content: center;
+}
+
+.login-header {
+  font-size: 45px;
+}
+
+.form {
+  margin-top: 5px;
+  display: inline-block;
+  text-align: center;
+  width: 30%;
+  align-content: center;
+  justify-content: center;
+}
+
+.nav-link {
+  background: inherit;
+}
+
+.alert {
+  margin-bottom: 10px;
+}
+
+.profile {
+  color: white;
+  margin: 5px;
+  padding: 0 4px;
+}
+
+.profile-name {
+  font-size: 18px;
+}
+
+.profile-email {
+  font-size: 15px;
+  word-wrap: break-word;
+}
+
+@media screen and (max-width: 767px) {
+  .form {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .form {
+    width: 70%;
+  }
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(225, 225, 225, 0.3);
+}
+
+.layout .layout-background {
+  background: #fff;
+}
