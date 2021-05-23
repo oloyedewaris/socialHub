@@ -9,13 +9,6 @@ import {
 import axios from "axios";
 import { getErrors, clearErrors } from "./errorActions";
 
-// //set previously logged user
-// export const setCurrentUser = () => (dispatch, state) => {
-//   dispatch({
-//     type: SET_CURRENT_USER,
-//   });
-// };
-
 //Log user in
 export const login = ({ email, password }) => (dispatch, state) => {
   const body = JSON.stringify({ email, password });
@@ -24,7 +17,6 @@ export const login = ({ email, password }) => (dispatch, state) => {
     .post("/api/auth", body, tokenConfig(state))
     .then(res => {
       dispatch(clearErrors());
-      console.log("here");
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

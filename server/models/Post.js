@@ -33,11 +33,6 @@ const PostSchema = new Schema({
     default: [],
     required: true,
   },
-  likesCount: {
-    type: Number,
-    default: 0,
-    required: true,
-  },
   text: {
     type: String,
     trim: true,

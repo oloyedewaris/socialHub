@@ -1,19 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import {
-  Input,
-  Button,
-  Alert,
-} from "antd";
+import { Input, Button, Alert } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { changeSettings } from "../../../Flux/actions/usersActions";
 import Wrapper from "../../../hoc/navWrapper";
 
 function Password() {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.user.id);
-  const error = useSelector((state) => state.error);
+  const userId = useSelector(state => state.auth.user._id);
+  const error = useSelector(state => state.error);
   const [Error, setError] = useState(null);
   const [Password, setPassword] = useState("");
   const [NewPassword, setNewPassword] = useState("");
@@ -36,17 +32,17 @@ function Password() {
     window.scrollTo(0, 0);
   }, []);
 
-  const onPasswordChange = (e) => {
+  const onPasswordChange = e => {
     setPassword(e.target.value);
     setError(null);
   };
 
-  const onNewPasswordChange = (e) => {
+  const onNewPasswordChange = e => {
     setNewPassword(e.target.value);
     setError(null);
   };
 
-  const onConfirmPasswordChange = (e) => {
+  const onConfirmPasswordChange = e => {
     setConfirmPassword(e.target.value);
     setError(null);
   };
@@ -56,7 +52,7 @@ function Password() {
       userId,
       password: Password,
       newPassword: NewPassword,
-      type: "passwordChange",
+      type: "passwordChange"
     };
     if (NewPassword === ConfirmPassword) {
       dispatch(changeSettings(newUpdate));
@@ -67,45 +63,39 @@ function Password() {
 
   return (
     <Wrapper>
-    <div style={{ margin: "10px" }}>
-      <div>
-        <Link to="/profile/settings">
-          <ArrowLeftOutlined style={{ color: "black", fontSize: "1.5rem" }} />
-        </Link>
-      </div>
-      {Error ? (
-        <Alert message={Error}/>
-      ) : null}
-      <div>
+      <div style={{ margin: "10px" }}>
         <div>
-          <div>
-            <div>Change Password</div>
-            <div>
-              <Input
-                placeholder="Enter Password"
-                onChange={onPasswordChange}
-                type="password"
-              />
-            </div>
-            <div>
-              <Input
-                placeholder="Enter New Password"
-                onChange={onNewPasswordChange}
-                type="password"
-              />
-            </div>
-            <div>
-              <Input
-                placeholder="Confirm New Password"
-                onChange={onConfirmPasswordChange}
-                type="password"
-              />
-            </div>
-            <Button onClick={onButtonClick}>Done</Button>
+          <Link to="/profile/settings">
+            <ArrowLeftOutlined />
+          </Link>
+        </div>
+        {Error ? <Alert message={Error} /> : null}
+        <div className="settings-container">
+          <h4>Change Password</h4>
+          <div className="settings-space">
+            <Input
+              placeholder="Enter Password"
+              onChange={onPasswordChange}
+              type="password"
+            />
           </div>
+          <div className="settings-space">
+            <Input.Password
+              placeholder="Enter New Password"
+              onChange={onNewPasswordChange}
+              type="password"
+            />
+          </div>
+          <div className="settings-space">
+            <Input.Password
+              placeholder="Confirm New Password"
+              onChange={onConfirmPasswordChange}
+              type="password"
+            />
+          </div>
+          <Button onClick={onButtonClick}>Done</Button>
         </div>
       </div>
-    </div>
     </Wrapper>
   );
 }

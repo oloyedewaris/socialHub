@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, Button } from "antd";
+import { List, Button, Avatar } from "antd";
 import {
   LikeOutlined,
   CommentOutlined,
@@ -10,7 +10,7 @@ import {
   ArrowLeftOutlined
 } from "@ant-design/icons";
 import { updatePostLikes } from "../../Flux/actions/postActions";
-import FullProfile from "../Profile/FullProfile";
+import Profile from "../Profile/Profile";
 import PostsFeed from "./PostsFeed";
 import Comments from "./Comments";
 import CommentInput from "./CommentInput";
@@ -42,62 +42,60 @@ const Post = props => {
   return (
     <div>
       {Route === "comment" ? (
-        <div>
-          <div style={{ margin: "10px" }}>
-            <ArrowLeftOutlined
-              onClick={() => setRoute(props.commingFrom)}
-              style={{ fontSize: "1.5rem" }}
-            />{" "}
+        <div style={{ margin: "15px" }}>
+          <div>
+            <ArrowLeftOutlined onClick={() => setRoute(props.commingFrom)} />{" "}
             back
           </div>
-          <h3>{posts[i].author}</h3>
-          <h6>{posts[i].text}</h6>
-          <span>
-            {!posts[i].likersId.includes(auth.user.id) ? (
-              <Button
-                disabled={updatingPostLike}
-                onClick={() => {
-                  onLikeClick(
-                    posts[i]._id,
-                    `${auth.user.firstName} ${auth.user.lastName}`,
-                    auth.user.id
-                  );
-                }}
-                size="sm"
-                style={{ margin: "2px" }}
+          <List
+            dataSource={["1"]}
+            renderItem={() => (
+              <List.Item
+                actions={[
+                  !posts[i].likersId.includes(auth.user._id) ? (
+                    <Button
+                      disabled={updatingPostLike}
+                      onClick={() => {
+                        onLikeClick(
+                          posts[i]._id,
+                          `${auth.user.firstName} ${auth.user.lastName}`,
+                          auth.user._id
+                        );
+                      }}
+                    >
+                      {`${posts[i].likers.length} `}
+                      <LikeOutlined />
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={updatingPostLike}
+                      onClick={() => {
+                        onUnlikeClick(
+                          posts[i]._id,
+                          `${auth.user.firstName} ${auth.user.lastName}`,
+                          auth.user._id
+                        );
+                      }}
+                    >
+                      {`${posts[i].likers.length} `}
+                      <LikeFilled />
+                    </Button>
+                  ),
+                  <Button>
+                    {`${posts[i].comments.length} `}
+                    <CommentOutlined />
+                  </Button>
+                ]}
               >
-                {`${posts[i].likesCount} `}
-                <LikeOutlined style={{ margin: "5px", fontSize: "1.5rem" }} />
-              </Button>
-            ) : (
-              <Button
-                disabled={updatingPostLike}
-                onClick={() => {
-                  onUnlikeClick(
-                    posts[i]._id,
-                    `${auth.user.firstName} ${auth.user.lastName}`,
-                    auth.user.id
-                  );
-                }}
-                size="sm"
-                style={{ margin: "2px" }}
-              >
-                {`${posts[i].likesCount} `}
-                <LikeFilled style={{ margin: "5px", fontSize: "1.5rem" }} />
-              </Button>
+                <List.Item.Meta
+                  avatar={<Avatar>{posts[i].author[0]}</Avatar>}
+                  title={posts[i].author}
+                  description={timeAgo.format(posts[i].postedTime)}
+                />
+                {posts[i].text}
+              </List.Item>
             )}
-          </span>
-          <Button
-            style={{
-              position: "absolute",
-              margin: "2px"
-            }}
-            size="sm"
-          >
-            {`${posts[i].comments.length} `}
-            <CommentOutlined style={{ margin: "5px", fontSize: "1.5rem" }} />
-          </Button>
-          <p>{timeAgo.format(posts[i].postedTime)}</p>
+          />
           <div>
             <Comments post={posts[i]} />
           </div>
@@ -105,12 +103,12 @@ const Post = props => {
             postData={{
               commenter: `${auth.user.firstName} ${auth.user.lastName}`,
               commentId: posts[i]._id,
-              userId: auth.user.id
+              userId: auth.user._id
             }}
           />
         </div>
       ) : Route === "/profile" ? (
-        <FullProfile />
+        <Profile />
       ) : Route === "/home" ? (
         <PostsFeed />
       ) : null}

@@ -16,7 +16,7 @@ router.get("/", auth, usersController.getAllUsers);
 //@route --Get api/users/:id
 //@description --Get a User By their id
 //@access --private
-router.get("/:id", auth, usersController.findUserById);
+// router.get("/:id", auth, usersController.findUserById);
 
 //@route --patch api/users/followings/:id
 //@description --Add a user to the list of users you are following

@@ -1,5 +1,5 @@
 import React from "react";
-import { Comment, Tooltip, List } from "antd";
+import { Comment, List } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteTwoTone } from "@ant-design/icons";
 import { deleteComment } from "../../Flux/actions/postActions";
@@ -21,8 +21,8 @@ const Comments = ({ post }) => {
       renderItem={(comment, index) => (
         <li key={index}>
           <Comment
-            actions={
-              auth.user.id === post.authorId ? (
+            actions={[
+              auth.user._id === post.authorId ? (
                 <DeleteTwoTone
                   onClick={() =>
                     onDeleteComment(post._id, comment._id, "deleteComment")
@@ -30,7 +30,7 @@ const Comments = ({ post }) => {
                   twoToneColor="red"
                 />
               ) : null
-            }
+            ]}
             author={comment.commenter}
             avatar={null}
             content={comment.text}

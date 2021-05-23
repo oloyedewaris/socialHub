@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, List, Avatar, Space } from "antd";
+import { Button, List, Avatar, Skeleton } from "antd";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useSelector, useDispatch } from "react-redux";
-import Skeleton from "react-loading-skeleton";
 import {
   LikeOutlined,
   LikeFilled,
@@ -46,13 +45,6 @@ const PostsFeed = () => {
     dispatch(updatePostLikes(postId, "unlike", user, userId));
   };
 
-  const IconText = ({ icon, text }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
-
   return (
     <div
       style={{
@@ -66,9 +58,9 @@ const PostsFeed = () => {
         <div>
           <CreatePosts />
           {postLoading ? (
-            <Skeleton height={70} count={2} />
+            <Skeleton active paragraph={{ row: 5 }} />
           ) : (
-            <div style={{ marginBottom: "20px" }}>
+            <div classsName="posts-list">
               {posts ? (
                 posts.length === 0 ? (
                   <h3>No post to show, make a post to appear here</h3>
@@ -77,8 +69,7 @@ const PostsFeed = () => {
                     itemLayout="vertical"
                     size="large"
                     pagination={{
-                      onChange: page => console.log(page),
-                      pageSize: 3
+                      pageSize: 5
                     }}
                     dataSource={posts}
                     footer={
@@ -90,36 +81,37 @@ const PostsFeed = () => {
                       <List.Item
                         key={i}
                         actions={[
-                          !posts[i].likersId.includes(auth.user.id) ? (
-                            <Button
-                              disabled={updatingPostLike}
-                              onClick={() => {
-                                console.log(posts);
-                                onLikeClick(
-                                  post._id,
-                                  `${auth.user.firstName} ${auth.user.lastName}`,
-                                  auth.user.id
-                                );
-                              }}
-                            >
-                              {`${post.likesCount} `}
-                              <LikeOutlined />
-                            </Button>
-                          ) : (
-                            <Button
-                              disabled={updatingPostLike}
-                              onClick={() => {
-                                onUnlikeClick(
-                                  post._id,
-                                  `${auth.user.firstName} ${auth.user.lastName}`,
-                                  auth.user.id
-                                );
-                              }}
-                            >
-                              {`${post.likesCount} `}
-                              <LikeFilled />
-                            </Button>
-                          ),
+                          <div>
+                            {!post.likersId.includes(auth.user._id) ? (
+                              <Button
+                                disabled={updatingPostLike}
+                                onClick={() => {
+                                  onLikeClick(
+                                    post._id,
+                                    `${auth.user.firstName} ${auth.user.lastName}`,
+                                    auth.user._id
+                                  );
+                                }}
+                              >
+                                {`${post.likers.length} `}
+                                <LikeOutlined />
+                              </Button>
+                            ) : (
+                              <Button
+                                disabled={updatingPostLike}
+                                onClick={() => {
+                                  onUnlikeClick(
+                                    post._id,
+                                    `${auth.user.firstName} ${auth.user.lastName}`,
+                                    auth.user._id
+                                  );
+                                }}
+                              >
+                                {`${post.likers.length} `}
+                                <LikeFilled />
+                              </Button>
+                            )}
+                          </div>,
                           <Button
                             onClick={() => {
                               setRoute("comments");
@@ -131,7 +123,7 @@ const PostsFeed = () => {
                           </Button>
                         ]}
                         extra={
-                          auth.user.id === posts[i].authorId ? (
+                          auth.user._id === posts[i].authorId ? (
                             <DeleteTwoTone
                               onClick={() => onDeletePost(posts[i]._id)}
                               twoToneColor="red"
@@ -140,14 +132,14 @@ const PostsFeed = () => {
                         }
                       >
                         <List.Item.Meta
-                          avater={<Avatar />}
+                          avatar={<Avatar>{post.author[0]}</Avatar>}
                           title={post.author}
                           description={timeAgo.format(post.postedTime)}
                         ></List.Item.Meta>
                         {post.text}
                       </List.Item>
                     )}
-                  ></List>
+                  />
                 )
               ) : null}
             </div>

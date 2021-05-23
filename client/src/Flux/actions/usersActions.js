@@ -1,7 +1,4 @@
 import {
-  USER_LOADING,
-  USER_LOADED,
-  AUTH_ERROR,
   GETTING_ALL_USERS,
   GET_ALL_USERS,
   GET_ALL_USERS_ERROR,
@@ -11,33 +8,11 @@ import {
   ADD_FOLLOWING,
   REMOVE_FOLLOWING,
   UPDATE_FOLLOW_ERROR,
-  CHANGE_SETTINGS,
+  CHANGE_SETTINGS
 } from "./types";
 import axios from "axios";
 import { getErrors } from "./errorActions";
 import { tokenConfig } from "./authActions";
-
-export const loadUser = (userId) => (dispatch, getState) => {
-  //User loading
-  dispatch({ type: USER_LOADING });
-
-  axios
-    .get(`/api/users/${userId}`, tokenConfig(getState))
-    .then((res) =>
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      if (err.response) {
-        dispatch(getErrors(err.response.data, err.response.status));
-        dispatch({
-          type: AUTH_ERROR,
-        });
-      }
-    });
-};
 
 export const getAllUsers = () => (dispatch, getState) => {
   //User loading
@@ -45,126 +20,126 @@ export const getAllUsers = () => (dispatch, getState) => {
 
   axios
     .get("/api/users", tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: GET_ALL_USERS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(getErrors(err.response.data, err.response.status));
         dispatch({
-          type: GET_ALL_USERS_ERROR,
+          type: GET_ALL_USERS_ERROR
         });
       }
     });
 };
 
-export const addFollowing = (userId, followingName, followingId) => (
+export const addFollowing = ({ userId, followingName, followingId }) => (
   dispatch,
   getState
 ) => {
   dispatch({
-    type: UPDATING_FOLLOW,
+    type: UPDATING_FOLLOW
   });
   const body = JSON.stringify({ followingName, followingId });
 
   axios
     .patch(`/api/users/followings/${userId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: ADD_FOLLOWING,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(getErrors(err.response.data, err.response.status));
         dispatch({
-          type: UPDATE_FOLLOW_ERROR,
+          type: UPDATE_FOLLOW_ERROR
         });
       }
     });
 };
 
-export const removeFollowing = (userId, unfollowingName, unfollowingId) => (
+export const removeFollowing = ({ userId, unfollowingName, unfollowingId }) => (
   dispatch,
   getState
 ) => {
   dispatch({
-    type: UPDATING_FOLLOW,
+    type: UPDATING_FOLLOW
   });
   const body = JSON.stringify({ unfollowingName, unfollowingId });
 
   axios
     .patch(`/api/users/unfollowings/${userId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: REMOVE_FOLLOWING,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(getErrors(err.response.data, err.response.status));
         dispatch({
-          type: UPDATE_FOLLOW_ERROR,
+          type: UPDATE_FOLLOW_ERROR
         });
       }
     });
 };
 
-export const addFollower = (userId, followerName, followerId) => (
+export const addFollower = ({ userId, followerName, followerId }) => (
   dispatch,
   getState
 ) => {
   dispatch({
-    type: UPDATING_FOLLOW,
+    type: UPDATING_FOLLOW
   });
   const body = JSON.stringify({ followerName, followerId });
 
   axios
     .patch(`/api/users/followers/${userId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: ADD_FOLLOWERS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(getErrors(err.response.data, err.response.status));
         dispatch({
-          type: UPDATE_FOLLOW_ERROR,
+          type: UPDATE_FOLLOW_ERROR
         });
       }
     });
 };
 
-export const removeFollower = (userId, unfollowerName, unfollowerId) => (
+export const removeFollower = ({ userId, unfollowerName, unfollowerId }) => (
   dispatch,
   getState
 ) => {
   dispatch({
-    type: UPDATING_FOLLOW,
+    type: UPDATING_FOLLOW
   });
 
   const body = JSON.stringify({ unfollowerName, unfollowerId });
 
   axios
     .patch(`/api/users/unfollowers/${userId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: REMOVE_FOLLOWERS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(getErrors(err.response.data, err.response.status));
         dispatch({
-          type: UPDATE_FOLLOW_ERROR,
+          type: UPDATE_FOLLOW_ERROR
         });
       }
     });
@@ -178,7 +153,7 @@ export const changeSettings = ({
   lastName,
   password,
   newPassword,
-  type,
+  type
 }) => (dispatch, getState) => {
   const body = JSON.stringify({
     bio,
@@ -186,7 +161,7 @@ export const changeSettings = ({
     firstName,
     lastName,
     password,
-    newPassword,
+    newPassword
   });
   axios
     .post(
@@ -194,13 +169,13 @@ export const changeSettings = ({
       body,
       tokenConfig(getState)
     )
-    .then((res) => {
+    .then(res => {
       dispatch({
         type: CHANGE_SETTINGS,
-        payload: res.data,
+        payload: res.data
       });
     })
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(
           getErrors(

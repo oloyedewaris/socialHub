@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import React, { useState } from "react";
+import { List, Layout, Button } from "antd";
 import {
   InstagramOutlined,
   TwitterOutlined,
@@ -7,17 +7,13 @@ import {
   LinkedinOutlined,
   GithubOutlined,
   WhatsAppOutlined,
-  DribbbleOutlined,
+  DribbbleOutlined
 } from "@ant-design/icons";
 
-const Footer = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
+function About() {
   const [Message, setMessage] = useState("");
 
-  const messageHandler = (e) => {
+  const messageHandler = e => {
     setMessage(e.target.value);
   };
 
@@ -25,28 +21,38 @@ const Footer = () => {
     Message.replace(" ", "%20");
   };
 
+  const data = [
+    {
+      title: "Phone",
+      desc: "+234 810 8745 769"
+    },
+    {
+      title: "Email",
+      desc: "oloyedewaris@gmail.com"
+    },
+    {
+      title: "Address",
+      desc: "Isawo Road, Ikorodu, Lagos Nigeria"
+    }
+  ];
+
   return (
-    <div>
-      <h2>Contact</h2>
-        <div flush>
-          <div color="info">
-            <div>Phone</div>
-            <div>+234 810 8745 769</div>
-          </div>
-          <div color="info">
-            <div>Email</div>
-            <div>oloyedewaris@gmail.com</div>
-            <div>
-              oloyedewaristemitope@gmail.com
-            </div>
-          </div>
-          <div color="info">
-            <div>Address</div>
-            <div>
-              Isawo Road, Ikorodu Lagos Nigeria
-            </div>
-          </div>
-        </div>
+    <div className="contact">
+      <Layout>
+        <h1 style={{ margin: "auto 20px" }}>I am Waris oloyede </h1>
+        <Layout.Content style={{ margin: "10px" }}>
+          <List
+            itemLayout="horizontal"
+            dataSource={data}
+            renderItem={item => (
+              <List.Item>
+                <List.Item.Meta title={item.title} description={item.desc} />
+              </List.Item>
+            )}
+          />
+        </Layout.Content>
+      </Layout>
+      <div style={{ margin: "10px" }}>
         <h5 style={{ margin: "10px" }}>GET IN TOUCH </h5>
         <a
           href="https://www.instagram.com//temi_topzee"
@@ -101,8 +107,8 @@ const Footer = () => {
         </a>
         <div>
           <p>You can also message me here on Whatsapp</p>
-          <area
-            type=""
+          <textarea
+            type="text"
             onChange={messageHandler}
             placeholder="Enter Your Message"
           />{" "}
@@ -111,14 +117,15 @@ const Footer = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`https://wa.me/2348108745769?=${Message}`}
+              href={`https://wa.me/2348108745769?text=${Message}`}
             >
               Send
             </a>
           </Button>
         </div>
+      </div>
     </div>
   );
-};
+}
 
-export default Footer;
+export default About;

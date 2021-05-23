@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import {
-  Input,
-  Button,
-  Alert,
-} from "antd";
+import { Input, Button, Alert } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { changeSettings } from "../../../Flux/actions/usersActions";
 import Wrapper from "../../../hoc/navWrapper";
 
 function Bio(props) {
   const dispatch = useDispatch();
-  const bio = useSelector((state) => state.auth.user.bio);
-  const userId = useSelector((state) => state.auth.user.id);
-  const error = useSelector((state) => state.error);
+  const bio = useSelector(state => state.auth.user.bio);
+  const userId = useSelector(state => state.auth.user._id);
+  const error = useSelector(state => state.error);
   const [Error, setError] = useState(null);
   const [Bio, setBio] = useState(bio);
   const [Password, setPassword] = useState("");
@@ -36,12 +32,12 @@ function Bio(props) {
     window.scrollTo(0, 0);
   }, []);
 
-  const onBioChange = (e) => {
+  const onBioChange = e => {
     setBio(e.target.value);
     setError(null);
   };
 
-  const onPasswordChange = (e) => {
+  const onPasswordChange = e => {
     setPassword(e.target.value);
     setError(null);
   };
@@ -51,7 +47,7 @@ function Bio(props) {
       userId,
       bio: Bio,
       password: Password,
-      type: "dataChange",
+      type: "dataChange"
     };
 
     dispatch(changeSettings(newUpdate));
@@ -59,37 +55,29 @@ function Bio(props) {
 
   return (
     <Wrapper>
-    <div>
-      <div style={{ margin: "10px" }}>
-        <Link to="/profile/settings">
-          <ArrowLeftOutlined style={{ color: "black", fontSize: "1.5rem" }} />
-        </Link>
-      </div>
-      {Error ? (
-        <Alert mesage={Error}/>
-      ) : null}
       <div>
-        <div>
-          <div>
-            <div>Edit Bio</div>
-            <div>
-              <Input type="text" onChange={onBioChange} value={Bio} />
-            </div>
+        <div style={{ margin: "10px" }}>
+          <Link to="/profile/settings">
+            <ArrowLeftOutlined />
+          </Link>
+        </div>
+        {Error ? <Alert mesage={Error} /> : null}
+        <div CLASSnAME="settings-container">
+          <h4>Edit Bio</h4>
+          <div className="settings-space">
+            <Input type="text" onChange={onBioChange} value={Bio} />
           </div>
-          <div>
-            <div>Enter Password</div>
-            <div>
-              <Input
-                type="password"
-                onChange={onPasswordChange}
-                value={Password}
-              />
-            </div>
-            <Button onClick={onButtonClick}>Done</Button>
+          <h4>Enter Password</h4>
+          <div className="settings-space">
+            <Input
+              type="password"
+              onChange={onPasswordChange}
+              value={Password}
+            />
           </div>
+          <Button onClick={onButtonClick}>Done</Button>
         </div>
       </div>
-    </div>
     </Wrapper>
   );
 }

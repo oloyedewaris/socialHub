@@ -10,7 +10,6 @@ exports.createPost = (req, res) => {
     comments: [],
     likers: [],
     likersId: [],
-    likesCount: 0,
     text: req.body.text,
     postedTime: Date.now(),
     timestamp: new Date().getTime(),
@@ -48,7 +47,6 @@ exports.updatePost = (req, res) => {
       return Post.findByIdAndUpdate(
         id,
         {
-          $inc: { likesCount: 1 },
           $addToSet: {
             likers: req.body.user,
             likersId: req.body.userId,
@@ -74,7 +72,6 @@ exports.updatePost = (req, res) => {
       return Post.findByIdAndUpdate(
         id,
         {
-          $inc: { likesCount: -1 },
           $pull: {
             likers: req.body.user,
             likersId: req.body.userId,

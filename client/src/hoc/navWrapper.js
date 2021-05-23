@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Menu, Layout } from "antd";
+import { Menu, Layout, Avatar } from "antd";
 import {
   HomeOutlined,
   TeamOutlined,
@@ -7,17 +7,17 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SearchOutlined,
-  PoweroffOutlined
+  PoweroffOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../Flux/actions/authActions";
-import Profile from "../components/Profile/Profile";
 
 const { Header, Content, Sider } = Layout;
 
 const Wrapper = props => {
-  const [collapse, setcollapse] = useState(false);
+  const [collapse, setcollapse] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,10 +25,15 @@ const Wrapper = props => {
 
   const toggle = () => setcollapse(!collapse);
   const userName = useSelector(state => state.auth.user.firstName);
+  const email = useSelector(state => state.auth.user.email);
   const dispatch = useDispatch();
 
-  const firstLetter = userName[0].toUpperCase();
-  const username = userName.replace(userName[0], firstLetter);
+  let username;
+  let firstLetter;
+  if (userName) {
+    firstLetter = userName[0].toUpperCase();
+    username = userName.replace(userName[0], firstLetter);
+  }
 
   const onLogout = () => {
     dispatch(logout());
@@ -44,6 +49,8 @@ const Wrapper = props => {
     current = "discover";
   } else if (location.pathname === "/follow") {
     current = "follow";
+  } else if (location.pathname.includes("/profile/settings")) {
+    current = "settings";
   } else {
     current = null;
   }
@@ -51,31 +58,46 @@ const Wrapper = props => {
   return (
     <div>
       <Layout>
-        <Sider trigger={null} collapsible collapsed={collapse}>
-          <Profile className="logo" />
+        <Sider
+          className="sider"
+          trigger={null}
+          collapsible
+          collapsed={collapse}
+        >
+          <Avatar className="logo">{firstLetter}</Avatar>
           <Menu theme="dark" selectedKeys={[current]} mode="inline">
-            <Menu.Item key="home" icon={<HomeOutlined />}>
-              <Link to="/home" className="nav-link">
-                {username}
-              </Link>
+            <Menu.Item key="home" icon={<HomeOutlined className="menu-font" />}>
+              <Link to="/home">{username}</Link>
             </Menu.Item>
-            <Menu.Item icon={<UserOutlined />} key="profile">
-              <Link to="/profile" className="nav-link">
-                Profile
-              </Link>
+            <Menu.Item
+              icon={<UserOutlined className="menu-font" />}
+              key="profile"
+            >
+              <Link to="/profile">Profile</Link>
             </Menu.Item>
-            <Menu.Item icon={<SearchOutlined />} key="discover">
-              <Link to="/discover" className="nav-link">
-                Discover
-              </Link>
+            <Menu.Item
+              icon={<SearchOutlined className="menu-font" />}
+              key="discover"
+            >
+              <Link to="/discover">Discover</Link>
             </Menu.Item>
-            <Menu.Item key="follow" icon={<TeamOutlined />}>
-              <Link to="/follow" className="nav-link">
-                Follow
-              </Link>
+            <Menu.Item
+              key="follow"
+              icon={<TeamOutlined className="menu-font" />}
+            >
+              <Link to="/follow">Follow</Link>
             </Menu.Item>
-            <Menu.Item icon={<PoweroffOutlined />} onClick={onLogout}>
-              <Link onClick={onLogout} to="/" className="nav-link">
+            <Menu.Item
+              key="settings"
+              icon={<SettingOutlined className="menu-font" />}
+            >
+              <Link to="/profile/settings">Settings</Link>
+            </Menu.Item>
+            <Menu.Item
+              icon={<PoweroffOutlined className="menu-font" />}
+              onClick={onLogout}
+            >
+              <Link onClick={onLogout} to="/">
                 Log Out
               </Link>
             </Menu.Item>
@@ -90,8 +112,11 @@ const Wrapper = props => {
                 onClick: toggle
               }
             )}
+            <p className="nav-email">{email}</p>
           </Header>
-          <Content className="layout-background">{props.children}</Content>
+          <Content className="layout-background">
+            <div className="scroll">{props.children}</div>
+          </Content>
         </Layout>
       </Layout>
     </div>

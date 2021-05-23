@@ -13,21 +13,20 @@ exports.getAllUsers = (req, res) => {
     .select("-password")
     .sort({ timestamp: -1 })
     .then((users) => {
-      // const filteredUsers= users.filter(user=> user._id !== req.users._id)
-      // console.log(filteredUsers)
-      return res.status(200).json(users);
+      const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
+      return res.status(200).json(filteredUsers);
     })
     .catch((err) => res.json(err).status(400));
 };
 
-exports.findUserById = (req, res) => {
-  const { id } = req.params;
+// exports.findUserById = (req, res) => {
+//   const { id } = req.params;
 
-  User.findById(id)
-    .select("-password")
-    .then((user) => res.json(user))
-    .catch((err) => res.status(404).json(err));
-};
+//   User.findById(id)
+//     .select("-password")
+//     .then((user) => res.json(user))
+//     .catch((err) => res.status(404).json(err));
+// };
 
 exports.followings = (req, res) => {
   const { id } = req.params;
@@ -54,7 +53,11 @@ exports.followings = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => res.status(200).json(users))
+          .then((users) => {
+            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
+            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
+            return res.status(200).json({users: filteredUsers, user: currUser})
+          })
           .catch((err) => res.json(err).status(400));
       }
     );
@@ -88,7 +91,11 @@ exports.unfollowings = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => res.status(200).json(users))
+          .then((users) => {
+            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
+            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
+            return res.status(200).json({users: filteredUsers, user: currUser})
+          })
           .catch((err) => res.json(err).status(400));
       }
     );
@@ -122,7 +129,11 @@ exports.followers = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => res.status(200).json(users))
+          .then((users) => {
+            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
+            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
+            return res.status(200).json({users: filteredUsers, user: currUser})
+          })
           .catch((err) => res.json(err).status(400));
       }
     );
@@ -156,7 +167,11 @@ exports.unfollowers = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => res.status(200).json(users))
+          .then((users) => {
+            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
+            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
+            return res.status(200).json({users: filteredUsers, user: currUser})
+          })
           .catch((err) => res.json(err).status(400));
       }
     );

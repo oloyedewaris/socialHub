@@ -10,7 +10,7 @@ const CommentInput = ({ postData }) => {
 
   const dispatch = useDispatch();
 
-  const { comment, commenter, userId, commentId } = postData;
+  const { commenter, userId, commentId } = postData;
 
   const onInputChange = e => {
     setComment(e.target.value);

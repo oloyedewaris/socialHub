@@ -1,6 +1,37 @@
 @import "~antd/dist/antd.compact.css";
 
-* {
+.navigation {
+  height: 20%;
+}
+
+.body {
+  height: 100%;
+}
+
+.footer {
+  width: 100%;
+  max-height: 120px;
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+  margin-top: 200px;
+  bottom: 0;
+  position: fixed;
+}
+
+.about-image {
+  display: flex;
+  justify-content: center;
+  width: 30vh;
+  height: 30vh;
+  margin: 15px;
+}
+
+.about {
+  height: 150vh;
+}
+.contact {
+  height: 110vh;
 }
 
 .container {
@@ -48,15 +79,88 @@
   word-wrap: break-word;
 }
 
+.post-button {
+  margin-left: 5;
+}
+
+.nav-email {
+  color: black;
+}
+
+.center-card {
+  display: "inline-block";
+  text-align: center;
+  width: 240;
+  margin: 10px 10px 3px 10px;
+}
+
+.discover-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.center-avatar {
+  display: inline-block;
+  text-align: center;
+}
+
+.tabs {
+  margin: 0 40%;
+  display: inline-block;
+  text-align: center;
+}
+
+.sider {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  position: static;
+  height: fit-content;
+  left: 0;
+}
+
+.menu-font {
+  font-size: 100px;
+}
+
+.posts-list {
+  margin: 0 30px;
+}
+
+.about-contact {
+  padding: 4px;
+  color: #ccc7cc;
+}
+
+.me {
+  color: #80bdff;
+  margin: 5px;
+}
+
+.footer-font {
+  color: #80bdff;
+  margin: 5px;
+  font-size: 1.5rem;
+}
+
+.settings-space {
+  margin: 5px;
+}
+
+.settings-container {
+  margin: 10px;
+}
+
 @media screen and (max-width: 767px) {
   .form {
-    width: 50%;
+    width: 60%;
   }
 }
 
 @media screen and (max-width: 450px) {
   .form {
-    width: 70%;
+    width: 85%;
   }
 }
 
@@ -72,4 +176,14 @@
 
 .layout .layout-background {
   background: #fff;
+}
+
+.center {
+  text-align: center;
+}
+
+.scroll {
+  border: 1px solid rgb(192, 190, 190);
+  overflow-y: scroll;
+  height: 55vh;
 }

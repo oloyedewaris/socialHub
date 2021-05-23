@@ -5,29 +5,31 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_FAILED,
   REGISTER_SUCCESS,
-  // SET_CURRENT_USER,
-  CHANGE_SETTINGS,
+  ADD_FOLLOWERS,
+  REMOVE_FOLLOWERS,
+  ADD_FOLLOWING,
+  REMOVE_FOLLOWING,
+  CHANGE_SETTINGS
 } from "../actions/types";
 
 const initialState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  user: null,
+  user: null
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);
-      // localStorage.setItem("userData", JSON.stringify(action.payload.user));
       return {
         ...state,
         token: localStorage.getItem("token"),
         isLoading: false,
         isAuthenticated: true,
-        user: action.payload.user,
+        user: action.payload.user
       };
     case AUTH_ERROR:
     case LOGIN_FAILED:
@@ -38,46 +40,41 @@ export default function (state = initialState, action) {
         token: null,
         user: null,
         isLoading: false,
-        isAuthenticated: false,
+        isAuthenticated: false
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
-      // localStorage.removeItem("userData");
       return {
         ...state,
         token: null,
         user: null,
         isLoading: false,
-        isAuthenticated: false,
+        isAuthenticated: false
       };
-    // case SET_CURRENT_USER:
-    //   const loggedUser = localStorage.getItem("userData");
-    //   if (loggedUser) {
-    //     const userData = JSON.parse(loggedUser);
-    //     return {
-    //       ...state,
-    //       token: localStorage.getItem("token"),
-    //       user: userData,
-    //       isAuthenticated: true,
-    //     };
-    //   } else {
-    //     return {
-    //       ...state,
-    //       isAuthenticated: false,
-    //     };
-    //   }
+    case ADD_FOLLOWERS:
+    case REMOVE_FOLLOWERS:
+    case ADD_FOLLOWING:
+    case REMOVE_FOLLOWING:
+      return {
+        ...state,
+        user: action.payload.user
+      };
     case CHANGE_SETTINGS:
       return {
         ...state,
         user: {
           ...state.user,
-          id: action.payload._id,
+          _id: action.payload._id,
           firstName: action.payload.firstName,
           lastName: action.payload.lastName,
           email: action.payload.email,
           bio: action.payload.bio,
-          registeredAt: action.payload.registeredAt,
-        },
+          followers: action.payload.followers,
+          following: action.payload.following,
+          followersId: action.payload.followersId,
+          followingId: action.payload.followingId,
+          registeredAt: action.payload.registeredAt
+        }
       };
     default:
       return state;

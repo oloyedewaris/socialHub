@@ -14,11 +14,11 @@ exports.loginUser = (req, res) => {
     return res.status(400).json("Please enter all field");
 
   //Check for existing user
-  User.findOne({ email }).then((user) => {
+  User.findOne({ email }).then(user => {
     if (!user) return res.status(400).json("Email not found");
 
     //Compare user's password
-    bcrypt.compare(password, user.password).then((isMatch) => {
+    bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) return res.status(400).json("Invalid password");
 
       //Sign a jwt token
@@ -27,13 +27,17 @@ exports.loginUser = (req, res) => {
         res.json({
           token,
           user: {
-            id: user.id,
+            _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             bio: user.bio,
-            registeredAt: user.registeredAt,
-          },
+            followersId: user.followersId,
+            followers: user.followers,
+            followingId: user.followingId,
+            following: user.following,
+            registeredAt: user.registeredAt
+          }
         });
       });
     });
@@ -57,7 +61,7 @@ exports.registerUser = (req, res) => {
     "Sep",
     "Oct",
     "Nov",
-    "Dec",
+    "Dec"
   ];
   const weeks = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
   const date = `${weeks[d.getDay()]}, ${
@@ -71,7 +75,7 @@ exports.registerUser = (req, res) => {
     return res.status(400).json("Password should be up to six characters");
 
   //Check for existing user
-  User.findOne({ email }).then((user) => {
+  User.findOne({ email }).then(user => {
     if (user) return res.status(400).json("Email already exist");
 
     //Create a new user
@@ -80,7 +84,7 @@ exports.registerUser = (req, res) => {
       lastName,
       email,
       password,
-      registeredAt: date,
+      registeredAt: date
     });
 
     //Hash the user's password
@@ -90,7 +94,7 @@ exports.registerUser = (req, res) => {
         newUser.password = hash;
         newUser
           .save()
-          .then((user) => {
+          .then(user => {
             //sign a jwt token
             jwt.sign(
               { id: user.id },
@@ -102,19 +106,23 @@ exports.registerUser = (req, res) => {
                   .json({
                     token,
                     user: {
-                      id: user.id,
+                      _id: user._id,
                       firstName: user.firstName,
                       lastName: user.lastName,
                       email: user.email,
                       bio: user.bio,
-                      registeredAt: user.registeredAt,
-                    },
+                      followersId: user.followersId,
+                      followers: user.followers,
+                      followingId: user.followingId,
+                      following: user.following,
+                      registeredAt: user.registeredAt
+                    }
                   })
                   .status(201);
               }
             );
           })
-          .catch((err) => res.status(400).json({ msg: "failed", error: err }));
+          .catch(err => res.status(400).json({ msg: "failed", error: err }));
       });
     });
   });

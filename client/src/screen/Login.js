@@ -65,9 +65,9 @@ const LoginUser = () => {
   };
 
   const isSubmiting = e => {
+    setMsg(null);
     setSubmit(true);
     onFormSubmit(e);
-    setMsg(null);
   };
 
   return (
@@ -103,7 +103,7 @@ const LoginUser = () => {
               />
             </Form.Item>
             <Button
-            type="primary"
+              type="primary"
               onClick={isSubmiting}
               disabled={submit}
               loading={submit}

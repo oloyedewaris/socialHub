@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import LeftMenu from "./LeftMenu";
 import RightMenu from "./RightMenu";
 import { Drawer, Button } from "antd";
+import { MenuFoldOutlined } from "@ant-design/icons";
 import "./navbar.css";
 
-const HomeNavbar = () => {
+const Navbar = () => {
   const [visible, setvisible] = useState(false);
 
   const showDrawer = () => {
@@ -22,27 +23,27 @@ const HomeNavbar = () => {
       </div>
       <div className="menuCon">
         <div className="leftMenu">
-          <LeftMenu />
+          <LeftMenu mode="horizontal" />
         </div>
         <div className="rightMenu">
-          <RightMenu />
+          <RightMenu mode="horizontal" />
         </div>
         <Button className="barsMenu" type="primary" onClick={showDrawer}>
-          <span className="barsBtn"></span>
+          <MenuFoldOutlined type="align-right" />
         </Button>
         <Drawer
-          title="Basic Drawer"
+          title="Social Space"
           placement="right"
-          closable={false}
+          closable={true}
           onClose={onClose}
           visible={visible}
         >
-          <LeftMenu />
-          <RightMenu />
+          <LeftMenu mode="inline" />
+          <RightMenu mode="inline" />
         </Drawer>
       </div>
     </nav>
   );
 };
 
-export default HomeNavbar;
+export default Navbar;

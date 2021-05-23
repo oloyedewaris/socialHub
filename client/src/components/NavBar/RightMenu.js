@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../Flux/actions/authActions";
 
-const RightMenu = () => {
+const RightMenu = ({ mode }) => {
   const isAuth = useSelector(state => state.auth.isAuthenticated);
 
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const RightMenu = () => {
   return (
     <div>
       {isAuth ? (
-        <Menu mode="horizontal">
+        <Menu mode={mode}>
           <Menu.Item key="mail">
             <Link onClick={onLogout} to="/">
               Logout
@@ -24,7 +24,7 @@ const RightMenu = () => {
           </Menu.Item>
         </Menu>
       ) : (
-        <Menu mode="horizontal">
+        <Menu mode={mode}>
           <Menu.Item key="mail">
             <Link to="/">Signin</Link>
           </Menu.Item>

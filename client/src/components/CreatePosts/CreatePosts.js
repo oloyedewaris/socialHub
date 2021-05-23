@@ -6,12 +6,12 @@ import { createPost } from "../../Flux/actions/postActions";
 
 function CreatePosts() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const postCreating = useSelector((state) => state.post.postCreating);
+  const user = useSelector(state => state.auth.user);
+  const postCreating = useSelector(state => state.post.postCreating);
   const [Error, setError] = useState(null);
   const [Text, setText] = useState("");
 
-  const onInputChange = (e) => {
+  const onInputChange = e => {
     setError(null);
     setText(e.target.value);
   };
@@ -21,7 +21,7 @@ function CreatePosts() {
       const newPost = {
         text: Text,
         author: user.firstName + " " + user.lastName,
-        authorId: user.id,
+        authorId: user._id
       };
 
       dispatch(createPost(newPost));
@@ -34,20 +34,23 @@ function CreatePosts() {
 
   return (
     <div>
-        <Input
-          type="textarea"
-          id="text"
-          name="text"
-          value={Text}
-          placeholder="What's on your mind"
-          onChange={onInputChange}
-        />
-          <Button color="secondary" onClick={onCreatePost}>
-            Post
-          </Button>
-      {Error ? (
-        <Alert message={Error}/>
-      ) : null}
+      <Input
+        type="textarea"
+        id="text"
+        name="text"
+        value={Text}
+        placeholder="What's on your mind"
+        onChange={onInputChange}
+      />
+      <Button
+        className="post-button"
+        size="large"
+        type="secondary"
+        onClick={onCreatePost}
+      >
+        Post
+      </Button>
+      {Error ? <Alert type="error" closable message={Error} /> : null}
       {postCreating ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Loader type="Rings" color="#00bfff" height={100} width={100} />

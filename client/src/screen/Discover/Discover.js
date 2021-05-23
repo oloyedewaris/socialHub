@@ -1,131 +1,119 @@
-import React, {useEffect} from "react";
-import { useDispatch , useSelector} from "react-redux";
-import { Button, Table } from "antd";
-import Skeleton from "react-loading-skeleton";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, Avatar, Skeleton } from "antd";
 import {
-  loadUser,
   getAllUsers,
   addFollower,
   addFollowing,
   removeFollower,
-  removeFollowing,
+  removeFollowing
 } from "../../Flux/actions/usersActions";
 import Wrapper from "../../hoc/navWrapper";
 
-const Discover= ()=> {
-  const dispatch = useDispatch()
+const Discover = () => {
+  const { Meta } = Card;
+  const dispatch = useDispatch();
 
-  const allUsers = useSelector(state => state.users.allUsers)
-  const authUser = useSelector(state => state.auth.user)
-  const currUser = useSelector(state => state.auth.user)
-  const allUsersLoading = useSelector(state => state.users.allUsersLoading)
+  const allUsers = useSelector(state => state.users.allUsers);
+  const authUser = useSelector(state => state.auth.user);
+  const allUsersLoading = useSelector(state => state.users.allUsersLoading);
 
   useEffect(() => {
-    dispatch(getAllUsers())
-    dispatch(loadUser(authUser.id))
+    dispatch(getAllUsers());
     window.scrollTo(0, 0);
-  }, [])
+  }, []);
 
-  const onAddFollowing = (userId, followingName, followingId) => {
-    dispatch(addFollowing(userId, followingName, followingId));
+  const onAddFollowing = ({ userId, followingName, followingId }) => {
+    dispatch(addFollowing({ userId, followingName, followingId }));
   };
 
-  const onRemoveFollowing = (userId, unfollowingName, unfollowingId) => {
-    dispatch(removeFollowing(userId, unfollowingName, unfollowingId))
+  const onRemoveFollowing = ({ userId, unfollowingName, unfollowingId }) => {
+    dispatch(removeFollowing({ userId, unfollowingName, unfollowingId }));
   };
 
-  const onAddFollower = (userId, followerName, followerId) => {
-    dispatch(addFollower(userId, followerName, followerId))
+  const onAddFollower = ({ userId, followerName, followerId }) => {
+    dispatch(addFollower({ userId, followerName, followerId }));
   };
 
-  const onRemoveFollower = (userId, unfollowerName, unfollowerId) => {
-    dispatch(removeFollower(userId, unfollowerName, unfollowerId))
+  const onRemoveFollower = ({ userId, unfollowerName, unfollowerId }) => {
+    dispatch(removeFollower({ userId, unfollowerName, unfollowerId }));
   };
 
-    const filteredUsers = allUsers.filter((user) => {
-      return user._id !== authUser.id;
-    });
-    return (
-      <Wrapper>
+  return (
+    <Wrapper>
       <div>
         {allUsersLoading ? (
-            <Skeleton height={70} count={3} />
+          <Skeleton avatar paragraph={{ row: 4 }} active />
         ) : (
-          <Table
-            className="table"
-            style={{ marginBottom: "10vh" }}
-            striped
-            dark
-          >
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((user, i) => {
-                  return (
-                    <tr key={i} style={{ overflowWrap: "break-word" }}>
-                      <td>{`${user.firstName} ${user.lastName}`}</td>
-                      <td>{user.email}</td>
-                      <td style={{ textAlign: "center" }}>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            if (user.followersId.includes(currUser._id)) {
-                              //Unfollow Person
-                              onRemoveFollower(
-                                user._id,
-                                `${authUser.firstName} ${authUser.lastName}`,
-                                authUser.id
-                              );
-                              onRemoveFollowing(
-                                authUser.id,
-                                `${user.firstName} ${user.lastName}`,
-                                user._id
-                              );
-                            } else {
-                              //Follow Person
-                              onAddFollower(
-                                user._id,
-                                `${authUser.firstName} ${authUser.lastName}`,
-                                authUser.id
-                              );
-                              onAddFollowing(
-                                authUser.id,
-                                `${user.firstName} ${user.lastName}`,
-                                user._id
-                              );
-                            }
-                          }}
-                        >
-                          {user.followersId.includes(currUser._id)
-                            ? "UnFollow"
-                            : "Follow"}
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <h4 className="center m-4">No User yet</h4>
-              )}
-            </tbody>
-          </Table>
+          <div className="discovered-container">
+            {allUsers.length > 0 ? (
+              allUsers.map((user, i) => (
+                <div style={{ margin: 10 }}>
+                  <Card
+                    className="center-card"
+                    hoverable
+                    cover={
+                      <Avatar className="center-avatar center" size={70}>
+                        {user.firstName[0]}
+                      </Avatar>
+                    }
+                  >
+                    <Meta
+                      title={`${user.firstName} ${user.lastName}`}
+                      description={user.email}
+                    />
+                  </Card>
+                  {user.followersId.includes(authUser._id) ? (
+                    <Button
+                      size="medium"
+                      type="default"
+                      disabled={allUsersLoading}
+                      onClick={() => {
+                        onRemoveFollower({
+                          userId: user._id,
+                          unfollowerName: `${authUser.firstName} ${authUser.lastName}`,
+                          unfollowerId: authUser._id
+                        });
+                        onRemoveFollowing({
+                          userId: authUser._id,
+                          unfollowingName: `${user.firstName} ${user.lastName}`,
+                          unfollowingId: user._id
+                        });
+                      }}
+                    >
+                      UnFollow
+                    </Button>
+                  ) : (
+                    <Button
+                      size="large"
+                      type="primary"
+                      disabled={allUsersLoading}
+                      onClick={() => {
+                        onAddFollower({
+                          userId: user._id,
+                          followerName: `${authUser.firstName} ${authUser.lastName}`,
+                          followerId: authUser._id
+                        });
+                        onAddFollowing({
+                          userId: authUser._id,
+                          followingName: `${user.firstName} ${user.lastName}`,
+                          followingId: user._id
+                        });
+                      }}
+                    >
+                      Follow
+                    </Button>
+                  )}
+                </div>
+              ))
+            ) : (
+              <h4 className="center">No User yet</h4>
+            )}
+          </div>
         )}
       </div>
-      </Wrapper>
-    );
-  }
-
-const mapStateToProps = (state) => ({
-  allUsers: state.users.allUsers,
-  authUser: state.auth.user,
-  currUser: state.users.getUser,
-  allUsersLoading: state.users.allUsersLoading,
-});
+    </Wrapper>
+  );
+};
 
 export default Discover;
