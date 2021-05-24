@@ -54,7 +54,7 @@ function Footer() {
         </a>
       </p>
       <p>
-        Created by{" "}
+        Developed by{" "}
         <a
           style={{ color: "#80bdff" }}
           href="https://waris-portfolio.herokuapp.com"

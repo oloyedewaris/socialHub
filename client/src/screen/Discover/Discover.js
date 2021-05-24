@@ -48,7 +48,7 @@ const Discover = () => {
           <div className="discovered-container">
             {allUsers.length > 0 ? (
               allUsers.map((user, i) => (
-                <div style={{ margin: 10 }}>
+                <div key={i} style={{ margin: 10 }}>
                   <Card
                     className="center-card"
                     hoverable
@@ -66,7 +66,7 @@ const Discover = () => {
                   {user.followersId.includes(authUser._id) ? (
                     <Button
                       size="medium"
-                      type="default"
+                      type="ghost"
                       disabled={allUsersLoading}
                       onClick={() => {
                         onRemoveFollower({

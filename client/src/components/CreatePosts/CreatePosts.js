@@ -33,11 +33,9 @@ function CreatePosts() {
   };
 
   return (
-    <div>
+    <div className="create-post">
       <Input
         type="textarea"
-        id="text"
-        name="text"
         value={Text}
         placeholder="What's on your mind"
         onChange={onInputChange}
@@ -45,7 +43,7 @@ function CreatePosts() {
       <Button
         className="post-button"
         size="large"
-        type="secondary"
+        type="primary"
         onClick={onCreatePost}
       >
         Post
@@ -53,7 +51,7 @@ function CreatePosts() {
       {Error ? <Alert type="error" closable message={Error} /> : null}
       {postCreating ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Loader type="Rings" color="#00bfff" height={100} width={100} />
+          <Loader type="Rings" color="#00bfff" height={70} width={70} />
           <br />
           <p style={{ margin: "1.5rem" }}>Creating your post</p>
         </div>

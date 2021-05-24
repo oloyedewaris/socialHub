@@ -152,6 +152,14 @@
   margin: 10px;
 }
 
+.create-post {
+  padding: 15px;
+}
+
+.post-button {
+  margin: 10px;
+}
+
 @media screen and (max-width: 767px) {
   .form {
     width: 60%;
@@ -168,7 +176,7 @@
   color: #1890ff;
 }
 
-#components-layout-demo-custom-trigger .logo {
+#components-layout-demo-custom-trigger .nav-logo {
   height: 32px;
   margin: 16px;
   background: rgba(225, 225, 225, 0.3);
@@ -186,4 +194,8 @@
   border: 1px solid rgb(192, 190, 190);
   overflow-y: scroll;
   height: 55vh;
+}
+
+.nav-logo {
+  margin: 7px;
 }

@@ -64,7 +64,7 @@ const Wrapper = props => {
           collapsible
           collapsed={collapse}
         >
-          <Avatar className="logo">{firstLetter}</Avatar>
+          <Avatar className="nav-logo">{firstLetter}</Avatar>
           <Menu theme="dark" selectedKeys={[current]} mode="inline">
             <Menu.Item key="home" icon={<HomeOutlined className="menu-font" />}>
               <Link to="/home">{username}</Link>
