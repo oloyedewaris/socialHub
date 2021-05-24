@@ -22,10 +22,10 @@ mongoose
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false,
+    useFindAndModify: false
   })
   .then(() => console.log("Mongodb is connected"))
-  .catch((err) => console.log(err));
+  .catch(err => console.log(err));
 
 //use routes
 app.use("/api/users", users);
@@ -34,9 +34,9 @@ app.use("/api/posts", post);
 
 //Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.use(express.static(path.join(__dirname, "../client", "build")));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
   });
 }
 
