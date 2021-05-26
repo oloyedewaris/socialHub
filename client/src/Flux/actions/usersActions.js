@@ -7,8 +7,7 @@ import {
   REMOVE_FOLLOWERS,
   ADD_FOLLOWING,
   REMOVE_FOLLOWING,
-  UPDATE_FOLLOW_ERROR,
-  CHANGE_SETTINGS
+  UPDATE_FOLLOW_ERROR
 } from "./types";
 import axios from "axios";
 import { getErrors } from "./errorActions";
@@ -141,49 +140,6 @@ export const removeFollower = ({ userId, unfollowerName, unfollowerId }) => (
         dispatch({
           type: UPDATE_FOLLOW_ERROR
         });
-      }
-    });
-};
-
-export const changeSettings = ({
-  userId,
-  bio,
-  email,
-  firstName,
-  lastName,
-  password,
-  newPassword,
-  type
-}) => (dispatch, getState) => {
-  const body = JSON.stringify({
-    bio,
-    email,
-    firstName,
-    lastName,
-    password,
-    newPassword
-  });
-  axios
-    .post(
-      `/api/users/settings/${userId}?type=${type}`,
-      body,
-      tokenConfig(getState)
-    )
-    .then(res => {
-      dispatch({
-        type: CHANGE_SETTINGS,
-        payload: res.data
-      });
-    })
-    .catch(err => {
-      if (err.response) {
-        dispatch(
-          getErrors(
-            err.response.data,
-            err.response.status,
-            "CHANGE_SETTINGS_FAILED"
-          )
-        );
       }
     });
 };

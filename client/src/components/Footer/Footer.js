@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <div>
-      <p className="about-contact">
+    <div className="about-contact">
+      <p>
         <Link to="/contact" className="me">
           Contact Me
         </Link>
@@ -49,13 +49,19 @@ function Footer() {
         >
           <LinkedinOutlined className="footer-font" />
         </a>
-        <a href="https://github.com/oloyedewaris">
+        <a
+          href="https://github.com/oloyedewaris"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <GithubOutlined className="footer-font" />
         </a>
       </p>
       <p>
         Developed by{" "}
         <a
+          target="_blank"
+          rel="noopener noreferrer"
           style={{ color: "#80bdff" }}
           href="https://waris-portfolio.herokuapp.com"
         >

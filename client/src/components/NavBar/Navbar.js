@@ -38,8 +38,8 @@ const Navbar = () => {
           onClose={onClose}
           visible={visible}
         >
-          <LeftMenu mode="inline" />
-          <RightMenu mode="inline" />
+          <LeftMenu onClose={onClose} mode="inline" />
+          <RightMenu onClose={onClose} mode="inline" />
         </Drawer>
       </div>
     </nav>

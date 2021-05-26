@@ -59,6 +59,7 @@ const Wrapper = props => {
     <div>
       <Layout>
         <Sider
+          breakpoint="lg"
           className="sider"
           trigger={null}
           collapsible

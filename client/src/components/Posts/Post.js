@@ -63,7 +63,7 @@ const Post = props => {
                         );
                       }}
                     >
-                      {`${posts[i].likers.length} `}
+                      {`${posts[i].likersId.length} `}
                       <LikeOutlined />
                     </Button>
                   ) : (
@@ -77,7 +77,7 @@ const Post = props => {
                         );
                       }}
                     >
-                      {`${posts[i].likers.length} `}
+                      {`${posts[i].likersId.length} `}
                       <LikeFilled />
                     </Button>
                   ),

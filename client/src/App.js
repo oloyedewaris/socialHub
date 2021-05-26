@@ -21,8 +21,8 @@ import Bio from "./components/Settings/Sections/Bio";
 const App = () => {
   return (
     <>
-      <Navbar className="navigation" />
-      <div className="body">
+      <Navbar />
+      <div>
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={RegisterUser} />

@@ -1,22 +1,14 @@
 @import "~antd/dist/antd.compact.css";
 
-.navigation {
-  height: 20%;
-}
-
-.body {
-  height: 100%;
-}
-
 .footer {
   width: 100%;
-  max-height: 120px;
   background-color: #343a40;
   color: #fff;
   text-align: center;
-  margin-top: 200px;
   bottom: 0;
   position: fixed;
+  height: auto;
+  margin: auto;
 }
 
 .about-image {
@@ -64,21 +56,6 @@
   margin-bottom: 10px;
 }
 
-.profile {
-  color: white;
-  margin: 5px;
-  padding: 0 4px;
-}
-
-.profile-name {
-  font-size: 18px;
-}
-
-.profile-email {
-  font-size: 15px;
-  word-wrap: break-word;
-}
-
 .post-button {
   margin-left: 5;
 }
@@ -106,30 +83,18 @@
 }
 
 .tabs {
-  margin: 0 40%;
+  margin: 0 30%;
   display: inline-block;
   text-align: center;
 }
 
-.sider {
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  position: static;
-  height: fit-content;
-  left: 0;
-}
-
-.menu-font {
-  font-size: 100px;
-}
-
 .posts-list {
-  margin: 0 30px;
+  margin: 0 auto;
+  background-color: #e9ecef;
+  margin-bottom: 10vh;
 }
 
 .about-contact {
-  padding: 4px;
   color: #ccc7cc;
 }
 
@@ -141,7 +106,6 @@
 .footer-font {
   color: #80bdff;
   margin: 5px;
-  font-size: 1.5rem;
 }
 
 .settings-space {

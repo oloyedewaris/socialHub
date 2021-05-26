@@ -3,7 +3,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Input, Button, Alert } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { changeSettings } from "../../../Flux/actions/usersActions";
+import { changeSettings } from "../../../Flux/actions/authActions";
 import Wrapper from "../../../hoc/navWrapper";
 
 function Name() {
@@ -59,6 +59,10 @@ function Name() {
     };
 
     dispatch(changeSettings(newUpdate));
+    setError(null);
+    setFirstName("");
+    setLastName("");
+    setPassword("");
   };
 
   return (

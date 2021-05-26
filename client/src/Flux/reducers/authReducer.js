@@ -60,21 +60,10 @@ export default function(state = initialState, action) {
         user: action.payload.user
       };
     case CHANGE_SETTINGS:
+      alert("Settings Updated Succesfully");
       return {
         ...state,
-        user: {
-          ...state.user,
-          _id: action.payload._id,
-          firstName: action.payload.firstName,
-          lastName: action.payload.lastName,
-          email: action.payload.email,
-          bio: action.payload.bio,
-          followers: action.payload.followers,
-          following: action.payload.following,
-          followersId: action.payload.followersId,
-          followingId: action.payload.followingId,
-          registeredAt: action.payload.registeredAt
-        }
+        user: action.payload
       };
     default:
       return state;

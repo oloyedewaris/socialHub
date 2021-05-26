@@ -12,11 +12,13 @@ exports.getAllUsers = (req, res) => {
   return User.find()
     .select("-password")
     .sort({ timestamp: -1 })
-    .then((users) => {
-      const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
+    .then(users => {
+      const filteredUsers = users.filter(
+        user => req.user._id.toString() !== user._id.toString()
+      );
       return res.status(200).json(filteredUsers);
     })
-    .catch((err) => res.json(err).status(400));
+    .catch(err => res.json(err).status(400));
 };
 
 // exports.findUserById = (req, res) => {
@@ -42,8 +44,8 @@ exports.followings = (req, res) => {
       {
         $addToSet: {
           following: followingName,
-          followingId: followingId,
-        },
+          followingId: followingId
+        }
       },
       { new: true, upsert: true },
       (err, doc) => {
@@ -53,12 +55,18 @@ exports.followings = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => {
-            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
-            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
-            return res.status(200).json({users: filteredUsers, user: currUser})
+          .then(users => {
+            currUser = users.find(
+              user => user._id.toString() === req.user._id.toString()
+            );
+            const filteredUsers = users.filter(
+              user => req.user._id.toString() !== user._id.toString()
+            );
+            return res
+              .status(200)
+              .json({ users: filteredUsers, user: currUser });
           })
-          .catch((err) => res.json(err).status(400));
+          .catch(err => res.json(err).status(400));
       }
     );
   } catch (e) {
@@ -80,8 +88,8 @@ exports.unfollowings = (req, res) => {
       {
         $pull: {
           following: unfollowingName,
-          followingId: unfollowingId,
-        },
+          followingId: unfollowingId
+        }
       },
       { new: true, upsert: true },
       (err, doc) => {
@@ -91,12 +99,18 @@ exports.unfollowings = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => {
-            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
-            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
-            return res.status(200).json({users: filteredUsers, user: currUser})
+          .then(users => {
+            currUser = users.find(
+              user => user._id.toString() === req.user._id.toString()
+            );
+            const filteredUsers = users.filter(
+              user => req.user._id.toString() !== user._id.toString()
+            );
+            return res
+              .status(200)
+              .json({ users: filteredUsers, user: currUser });
           })
-          .catch((err) => res.json(err).status(400));
+          .catch(err => res.json(err).status(400));
       }
     );
   } catch (e) {
@@ -118,8 +132,8 @@ exports.followers = (req, res) => {
       {
         $addToSet: {
           followers: followerName,
-          followersId: followerId,
-        },
+          followersId: followerId
+        }
       },
       { new: true, upsert: true },
       (err, doc) => {
@@ -129,12 +143,18 @@ exports.followers = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => {
-            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
-            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
-            return res.status(200).json({users: filteredUsers, user: currUser})
+          .then(users => {
+            currUser = users.find(
+              user => user._id.toString() === req.user._id.toString()
+            );
+            const filteredUsers = users.filter(
+              user => req.user._id.toString() !== user._id.toString()
+            );
+            return res
+              .status(200)
+              .json({ users: filteredUsers, user: currUser });
           })
-          .catch((err) => res.json(err).status(400));
+          .catch(err => res.json(err).status(400));
       }
     );
   } catch (e) {
@@ -156,8 +176,8 @@ exports.unfollowers = (req, res) => {
       {
         $pull: {
           followers: unfollowerName,
-          followersId: unfollowerId,
-        },
+          followersId: unfollowerId
+        }
       },
       { new: true, upsert: true },
       (err, doc) => {
@@ -167,12 +187,18 @@ exports.unfollowers = (req, res) => {
         return User.find()
           .select("-password")
           .sort({ timestamp: -1 })
-          .then((users) => {
-            currUser= users.find(user=> user._id.toString() === req.user._id.toString())
-            const filteredUsers= users.filter(user=> req.user._id.toString() !== user._id.toString() )
-            return res.status(200).json({users: filteredUsers, user: currUser})
+          .then(users => {
+            currUser = users.find(
+              user => user._id.toString() === req.user._id.toString()
+            );
+            const filteredUsers = users.filter(
+              user => req.user._id.toString() !== user._id.toString()
+            );
+            return res
+              .status(200)
+              .json({ users: filteredUsers, user: currUser });
           })
-          .catch((err) => res.json(err).status(400));
+          .catch(err => res.json(err).status(400));
       }
     );
   } catch (e) {
@@ -204,30 +230,31 @@ exports.settings = (req, res) => {
   try {
     if (req.query.type === "dataChange") {
       //Compare password before update settings
-      bcrypt.compare(Password, req.user.password).then((isMatch) => {
+      bcrypt.compare(Password, req.user.password).then(isMatch => {
         if (!isMatch) {
           return res.status(400).json("Invalid password");
         } else {
           if (Email) {
             //Check for existing email
-            User.findOne({ email: Email }).then((user) => {
+            User.findOne({ email: Email }).then(user => {
               if (user) {
-                return res.status(400).json("Email already exist");
+                return res.status(400).json("Email already used");
               } else {
+                //Update if doesnt exist before
                 User.findByIdAndUpdate(
                   userId,
                   {
                     $set: {
-                      email: Email,
-                    },
+                      email: Email
+                    }
                   },
                   { new: true, upsert: true },
-                  (err) => {
+                  err => {
                     if (err) throw err;
                     return User.findById(userId)
                       .select("-password")
-                      .then((user) => res.json(user))
-                      .catch((err) => res.status(404).json(err));
+                      .then(user => res.json(user))
+                      .catch(err => res.status(404).json(err));
                   }
                 );
               }
@@ -237,72 +264,96 @@ exports.settings = (req, res) => {
           if (FirstName && LastName) {
             //To change all previous posts
 
-            Post.find({ authorId: userId }).exec((err, posts) => {
-              if (err) throw err;
-              if (posts.length > 0) {
-                Post.updateMany(
-                  { authorId: userId },
-                  {
-                    $set: {
-                      author: `${FirstName} ${LastName}`,
-                    },
-                  },
-                  { new: true, upsert: true },
-                  (err) => {
-                    if (err) throw err;
-                  }
-                );
-              }
-            });
-
-            let found = false;
-
-            Post.find().exec((err, posts) => {
-              posts.forEach((post) => {
-                post.comments.forEach((comment) => {
-                  if (comment.commenterId === userId) {
-                    found = true;
-                  }
-                });
-              });
-
-              if (found) {
-                Post.updateMany(
-                  {
-                    "comments.commenterId": userId,
-                  },
-                  {
-                    $set: {
-                      "comments.$[elem].commenter": `${FirstName} ${LastName}`,
-                    },
-                  },
-                  {
-                    arrayFilters: [{ "elem.commenterId": userId }],
-                    new: true,
-                    upsert: true,
-                  },
-                  (err) => {
-                    if (err) throw err;
-                  }
-                );
-              }
-            });
-
+            //Update all user information
             User.findByIdAndUpdate(
               userId,
               {
                 $set: {
                   firstName: FirstName,
-                  lastName: LastName,
-                },
+                  lastName: LastName
+                }
               },
               { new: true, upsert: true },
-              (err) => {
+              err => {
                 if (err) throw err;
+
+                //change all posts author
+                Post.find({ authorId: userId }).exec((err, posts) => {
+                  if (err) throw err;
+                  if (posts.length > 0) {
+                    Post.updateMany(
+                      { authorId: userId },
+                      {
+                        $set: {
+                          author: `${FirstName} ${LastName}`
+                        }
+                      },
+                      { new: true, upsert: true },
+                      err => {
+                        if (err) throw err;
+                      }
+                    );
+                  }
+                });
+
+                //check for and change name in comment
+                let postfound = false;
+                Post.find().exec((err, posts) => {
+                  //check for name for all comments
+                  posts.forEach(post => {
+                    post.comments.forEach(comment => {
+                      if (comment.commenterId === userId) {
+                        postfound = true;
+                      }
+                    });
+                  });
+
+                  //change name for all comments
+                  if (postfound) {
+                    Post.updateMany(
+                      {
+                        "comments.commenterId": userId
+                      },
+                      {
+                        $set: {
+                          "comments.$[elem].commenter": `${FirstName} ${LastName}`
+                        }
+                      },
+                      {
+                        arrayFilters: [{ "elem.commenterId": userId }],
+                        new: true,
+                        upsert: true
+                      },
+                      err => {
+                        if (err) throw err;
+                      }
+                    );
+                  }
+                });
+
+                //update the likes array
+                // Post.updateMany(
+                //   { likersId: [req.user._id] },
+                //   {
+                //     $pull: {
+                //       likers: req.user._id
+                //     },
+                //     $push: {
+                //       likers: `${FirstName} ${LastName}`
+                //     }
+                //   },
+                //   {
+                //     new: true
+                //   },
+                //   err => {
+                //     if (err) throw err;
+                //   }
+                // );
+
                 return User.findById(userId)
                   .select("-password")
-                  .then((user) => res.json(user))
-                  .catch((err) => res.status(404).json(err));
+                  .then(user => res.json(user))
+                  .catch(err => res.status(404).json(err));
               }
             );
           }
@@ -312,16 +363,16 @@ exports.settings = (req, res) => {
               userId,
               {
                 $set: {
-                  bio: Bio,
-                },
+                  bio: Bio
+                }
               },
               { new: true, upsert: true },
-              (err) => {
+              err => {
                 if (err) throw err;
                 return User.findById(userId)
                   .select("-password")
-                  .then((user) => res.json(user))
-                  .catch((err) => res.status(404).json(err));
+                  .then(user => res.json(user))
+                  .catch(err => res.status(404).json(err));
               }
             );
           }
@@ -332,7 +383,7 @@ exports.settings = (req, res) => {
         return res.status(404).json({ message: "User not found." });
       }
     } else if (req.query.type === "passwordChange") {
-      bcrypt.compare(Password, req.user.password).then((isMatch) => {
+      bcrypt.compare(Password, req.user.password).then(isMatch => {
         if (!isMatch) {
           return res.status(400).json("Invalid password");
         } else {
@@ -344,16 +395,16 @@ exports.settings = (req, res) => {
                 userId,
                 {
                   $set: {
-                    password: hash,
-                  },
+                    password: hash
+                  }
                 },
                 { new: true, upsert: true },
-                (err) => {
+                err => {
                   if (err) throw err;
                   return User.findById(userId)
                     .select("-password")
-                    .then((user) => res.json(user))
-                    .catch((err) => res.status(404).json(err));
+                    .then(user => res.json(user))
+                    .catch(err => res.status(404).json(err));
                 }
               );
             });

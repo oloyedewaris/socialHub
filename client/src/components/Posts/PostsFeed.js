@@ -46,12 +46,7 @@ const PostsFeed = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#E9ECEF",
-        marginBottom: "10vh"
-      }}
-    >
+    <div>
       {Route === "comments" ? (
         <Post commingFrom="/home" commentIndex={CommentIndex} />
       ) : (
@@ -93,7 +88,7 @@ const PostsFeed = () => {
                                   );
                                 }}
                               >
-                                {`${post.likers.length} `}
+                                {`${post.likersId.length} `}
                                 <LikeOutlined />
                               </Button>
                             ) : (
@@ -107,7 +102,7 @@ const PostsFeed = () => {
                                   );
                                 }}
                               >
-                                {`${post.likers.length} `}
+                                {`${post.likersId.length} `}
                                 <LikeFilled />
                               </Button>
                             )}

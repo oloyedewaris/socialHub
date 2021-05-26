@@ -3,8 +3,8 @@ import {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   REGISTER_FAILED,
-  REGISTER_SUCCESS
-  // SET_CURRENT_USER,
+  REGISTER_SUCCESS,
+  CHANGE_SETTINGS
 } from "./types";
 import axios from "axios";
 import { getErrors, clearErrors } from "./errorActions";
@@ -67,6 +67,50 @@ export const register = ({
       dispatch({
         type: REGISTER_FAILED
       });
+    });
+};
+
+// Change settings
+export const changeSettings = ({
+  userId,
+  bio,
+  email,
+  firstName,
+  lastName,
+  password,
+  newPassword,
+  type
+}) => (dispatch, getState) => {
+  const body = JSON.stringify({
+    bio,
+    email,
+    firstName,
+    lastName,
+    password,
+    newPassword
+  });
+  axios
+    .post(
+      `/api/users/settings/${userId}?type=${type}`,
+      body,
+      tokenConfig(getState)
+    )
+    .then(res => {
+      dispatch({
+        type: CHANGE_SETTINGS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      if (err.response) {
+        dispatch(
+          getErrors(
+            err.response.data,
+            err.response.status,
+            "CHANGE_SETTINGS_FAILED"
+          )
+        );
+      }
     });
 };
 

@@ -3,7 +3,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Input, Button, Alert } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { changeSettings } from "../../../Flux/actions/usersActions";
+import { changeSettings } from "../../../Flux/actions/authActions";
 import Wrapper from "../../../hoc/navWrapper";
 
 function Bio(props) {
@@ -30,7 +30,7 @@ function Bio(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [bio]);
 
   const onBioChange = e => {
     setBio(e.target.value);
@@ -51,6 +51,9 @@ function Bio(props) {
     };
 
     dispatch(changeSettings(newUpdate));
+    setError(null);
+    setBio("");
+    setPassword("");
   };
 
   return (
@@ -61,8 +64,8 @@ function Bio(props) {
             <ArrowLeftOutlined />
           </Link>
         </div>
-        {Error ? <Alert mesage={Error} /> : null}
-        <div CLASSnAME="settings-container">
+        {Error ? <Alert mesage={Error} type="error" /> : null}
+        <div className="settings-container">
           <h4>Edit Bio</h4>
           <div className="settings-space">
             <Input type="text" onChange={onBioChange} value={Bio} />
