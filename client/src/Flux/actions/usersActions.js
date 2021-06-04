@@ -35,14 +35,14 @@ export const getAllUsers = () => (dispatch, getState) => {
     });
 };
 
-export const addFollowing = ({ userId, followingName, followingId }) => (
+export const addFollowing = ({ userId, followingId }) => (
   dispatch,
   getState
 ) => {
   dispatch({
     type: UPDATING_FOLLOW
   });
-  const body = JSON.stringify({ followingName, followingId });
+  const body = JSON.stringify({ followingId });
 
   axios
     .patch(`/api/users/followings/${userId}`, body, tokenConfig(getState))
@@ -62,14 +62,14 @@ export const addFollowing = ({ userId, followingName, followingId }) => (
     });
 };
 
-export const removeFollowing = ({ userId, unfollowingName, unfollowingId }) => (
+export const removeFollowing = ({ userId, unfollowingId }) => (
   dispatch,
   getState
 ) => {
   dispatch({
     type: UPDATING_FOLLOW
   });
-  const body = JSON.stringify({ unfollowingName, unfollowingId });
+  const body = JSON.stringify({ unfollowingId });
 
   axios
     .patch(`/api/users/unfollowings/${userId}`, body, tokenConfig(getState))
@@ -89,14 +89,11 @@ export const removeFollowing = ({ userId, unfollowingName, unfollowingId }) => (
     });
 };
 
-export const addFollower = ({ userId, followerName, followerId }) => (
-  dispatch,
-  getState
-) => {
+export const addFollower = ({ userId, followerId }) => (dispatch, getState) => {
   dispatch({
     type: UPDATING_FOLLOW
   });
-  const body = JSON.stringify({ followerName, followerId });
+  const body = JSON.stringify({ followerId });
 
   axios
     .patch(`/api/users/followers/${userId}`, body, tokenConfig(getState))
@@ -116,7 +113,7 @@ export const addFollower = ({ userId, followerName, followerId }) => (
     });
 };
 
-export const removeFollower = ({ userId, unfollowerName, unfollowerId }) => (
+export const removeFollower = ({ userId, unfollowerId }) => (
   dispatch,
   getState
 ) => {
@@ -124,7 +121,7 @@ export const removeFollower = ({ userId, unfollowerName, unfollowerId }) => (
     type: UPDATING_FOLLOW
   });
 
-  const body = JSON.stringify({ unfollowerName, unfollowerId });
+  const body = JSON.stringify({ unfollowerId });
 
   axios
     .patch(`/api/users/unfollowers/${userId}`, body, tokenConfig(getState))

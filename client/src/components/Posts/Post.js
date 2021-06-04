@@ -29,12 +29,12 @@ const Post = props => {
     window.scrollTo(0, 0);
   }, []);
 
-  const onLikeClick = (postId, user, userId) => {
-    dispatch(updatePostLikes(postId, "like", user, userId));
+  const onLikeClick = (postId, userId) => {
+    dispatch(updatePostLikes(postId, "like", userId));
   };
 
-  const onUnlikeClick = (postId, user, userId) => {
-    dispatch(updatePostLikes(postId, "unlike", user, userId));
+  const onUnlikeClick = (postId, userId) => {
+    dispatch(updatePostLikes(postId, "unlike", userId));
   };
 
   const i = props.commentIndex;
@@ -52,32 +52,24 @@ const Post = props => {
             renderItem={() => (
               <List.Item
                 actions={[
-                  !posts[i].likersId.includes(auth.user._id) ? (
+                  !posts[i].likers.includes(auth.user._id) ? (
                     <Button
                       disabled={updatingPostLike}
                       onClick={() => {
-                        onLikeClick(
-                          posts[i]._id,
-                          `${auth.user.firstName} ${auth.user.lastName}`,
-                          auth.user._id
-                        );
+                        onLikeClick(posts[i]._id, auth.user._id);
                       }}
                     >
-                      {`${posts[i].likersId.length} `}
+                      {`${posts[i].likers.length} `}
                       <LikeOutlined />
                     </Button>
                   ) : (
                     <Button
                       disabled={updatingPostLike}
                       onClick={() => {
-                        onUnlikeClick(
-                          posts[i]._id,
-                          `${auth.user.firstName} ${auth.user.lastName}`,
-                          auth.user._id
-                        );
+                        onUnlikeClick(posts[i]._id, auth.user._id);
                       }}
                     >
-                      {`${posts[i].likersId.length} `}
+                      {`${posts[i].likers.length} `}
                       <LikeFilled />
                     </Button>
                   ),
@@ -88,8 +80,14 @@ const Post = props => {
                 ]}
               >
                 <List.Item.Meta
-                  avatar={<Avatar>{posts[i].author[0]}</Avatar>}
-                  title={posts[i].author}
+                  avatar={
+                    <Avatar
+                      style={{ backgroundColor: posts[i].author.avatarColor }}
+                    >
+                      {posts[i].author.firstName[0]}
+                    </Avatar>
+                  }
+                  title={`${posts[i].author.firstName} ${posts[i].author.lastName}`}
                   description={timeAgo.format(posts[i].postedTime)}
                 />
                 {posts[i].text}
@@ -101,7 +99,6 @@ const Post = props => {
           </div>
           <CommentInput
             postData={{
-              commenter: `${auth.user.firstName} ${auth.user.lastName}`,
               commentId: posts[i]._id,
               userId: auth.user._id
             }}

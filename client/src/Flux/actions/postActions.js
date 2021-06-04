@@ -9,7 +9,7 @@ import {
   DELETE_COMMENT,
   DELETE_POST,
   UPDATING_POST_LIKE,
-  UPDATE_POST_LIKES,
+  UPDATE_POST_LIKES
 } from "./types";
 import axios from "axios";
 import { getErrors } from "./errorActions";
@@ -17,17 +17,17 @@ import { tokenConfig } from "./authActions";
 
 export const getPosts = () => (dispatch, getState) => {
   dispatch({
-    type: GETTING_POSTS,
+    type: GETTING_POSTS
   });
   axios
     .get("/api/posts", tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: GET_POSTS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response)
         return dispatch(
           getErrors(
@@ -37,30 +37,27 @@ export const getPosts = () => (dispatch, getState) => {
           )
         );
       dispatch({
-        type: GET_POSTS_FAILED,
+        type: GET_POSTS_FAILED
       });
     });
 };
 
-export const createPost = ({ text, author, authorId }) => (
-  dispatch,
-  getState
-) => {
+export const createPost = ({ text, authorId }) => (dispatch, getState) => {
   dispatch({
-    type: CREATING_POST,
+    type: CREATING_POST
   });
 
-  const body = JSON.stringify({ text, author, authorId });
+  const body = JSON.stringify({ text, authorId });
 
   axios
     .post("/api/posts", body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: CREATE_POST,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response) {
         dispatch(
           getErrors(
@@ -70,30 +67,30 @@ export const createPost = ({ text, author, authorId }) => (
           )
         );
         dispatch({
-          type: CREATE_POST_FAILED,
+          type: CREATE_POST_FAILED
         });
       }
     });
 };
 
-export const updatePostLikes = (postId, action, user, userId) => (
+export const updatePostLikes = (postId, action, userId) => (
   dispatch,
   getState
 ) => {
   dispatch({
-    type: UPDATING_POST_LIKE,
+    type: UPDATING_POST_LIKE
   });
-  const body = JSON.stringify({ action, user, userId });
+  const body = JSON.stringify({ action, userId });
 
   axios
     .patch(`/api/posts/${postId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: UPDATE_POST_LIKES,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response)
         return dispatch(
           getErrors(
@@ -105,21 +102,21 @@ export const updatePostLikes = (postId, action, user, userId) => (
     });
 };
 
-export const addComment = (postId, action, commenter, commenterId, text) => (
+export const addComment = (postId, action, commenterId, text) => (
   dispatch,
   getState
 ) => {
-  const body = JSON.stringify({ action, commenter, commenterId, text });
+  const body = JSON.stringify({ action, commenterId, text });
 
   axios
     .patch(`/api/posts/${postId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: ADD_COMMENT,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response)
         return dispatch(
           getErrors(
@@ -139,13 +136,13 @@ export const deleteComment = (postId, commentId, action) => (
 
   axios
     .patch(`/api/posts/${postId}`, body, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: DELETE_COMMENT,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response)
         return dispatch(
           getErrors(
@@ -157,16 +154,16 @@ export const deleteComment = (postId, commentId, action) => (
     });
 };
 
-export const deletePost = (postId) => (dispatch, getState) => {
+export const deletePost = postId => (dispatch, getState) => {
   axios
     .delete(`/api/posts/${postId}`, tokenConfig(getState))
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: DELETE_POST,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       if (err.response)
         return dispatch(
           getErrors(

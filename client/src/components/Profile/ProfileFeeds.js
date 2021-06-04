@@ -26,12 +26,12 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
   const posts = useSelector(state => state.post.posts);
   const auth = useSelector(state => state.auth);
 
-  const onLikeClick = (postId, user, userId) => {
-    dispatch(updatePostLikes(postId, "like", user, userId));
+  const onLikeClick = (postId, userId) => {
+    dispatch(updatePostLikes(postId, "like", userId));
   };
 
-  const onUnlikeClick = (postId, user, userId) => {
-    dispatch(updatePostLikes(postId, "unlike", user, userId));
+  const onUnlikeClick = (postId, userId) => {
+    dispatch(updatePostLikes(postId, "unlike", userId));
   };
 
   const onDeletePost = postId => {
@@ -46,7 +46,7 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
   var filteredPost;
   if (posts) {
     filteredPost = posts.filter(post => {
-      return user._id === post.authorId;
+      return user._id === post.author._id;
     });
   }
 
@@ -68,32 +68,24 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
           key={i}
           actions={[
             <div>
-              {!post.likersId.includes(auth.user._id) ? (
+              {!post.likers.includes(auth.user._id) ? (
                 <Button
                   disabled={updatingPostLike}
                   onClick={() => {
-                    onLikeClick(
-                      post._id,
-                      `${auth.user.firstName} ${auth.user.lastName}`,
-                      auth.user._id
-                    );
+                    onLikeClick(post._id, auth.user._id);
                   }}
                 >
-                  {`${post.likersId.length} `}
+                  {`${post.likers.length} `}
                   <LikeOutlined />
                 </Button>
               ) : (
                 <Button
                   disabled={updatingPostLike}
                   onClick={() => {
-                    onUnlikeClick(
-                      post._id,
-                      `${auth.user.firstName} ${auth.user.lastName}`,
-                      auth.user._id
-                    );
+                    onUnlikeClick(post._id, auth.user._id);
                   }}
                 >
-                  {`${post.likersId.length} `}
+                  {`${post.likers.length} `}
                   <LikeFilled />
                 </Button>
               )}
@@ -116,8 +108,12 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
           }
         >
           <List.Item.Meta
-            avatar={<Avatar>{post.author[0]}</Avatar>}
-            title={post.author}
+            avatar={
+              <Avatar style={{ backgroundColor: post.author.avatarColor }}>
+                {post.author.firstName[0]}
+              </Avatar>
+            }
+            title={`${post.author.firstName} ${post.author.lastName}`}
             description={timeAgo.format(post.postedTime)}
           ></List.Item.Meta>
           {post.text}

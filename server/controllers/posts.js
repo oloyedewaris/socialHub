@@ -5,24 +5,25 @@ const Post = require("../models/Post");
 exports.createPost = (req, res) => {
   //Create a new post
   const newPost = new Post({
-    author: req.body.author,
-    authorId: req.body.authorId,
+    author: req.body.authorId,
     comments: [],
     likers: [],
     likersId: [],
     text: req.body.text,
     postedTime: Date.now(),
-    timestamp: new Date().getTime(),
+    timestamp: new Date().getTime()
   });
   newPost
     .save()
-    .then((post) => {
+    .then(post => {
       Post.find()
+        .populate("author")
+        .populate("comments.commenter")
         .sort({ timestamp: -1 })
-        .then((posts) => res.status(200).json(posts))
-        .catch((err) => res.json(err).status(400));
+        .then(posts => res.status(200).json(posts))
+        .catch(err => res.json(err).status(400));
     })
-    .catch((err) => res.status(400).send(err));
+    .catch(err => res.status(400).send(err));
 };
 
 exports.deletePost = async (req, res) => {
@@ -30,9 +31,11 @@ exports.deletePost = async (req, res) => {
     const post = await Post.findById(req.params.id);
     await post.remove();
     return Post.find()
+      .populate("author")
+      .populate("comments.commenter")
       .sort({ timestamp: -1 })
-      .then((posts) => res.status(200).json(posts))
-      .catch((err) => res.json(err).status(400));
+      .then(posts => res.status(200).json(posts))
+      .catch(err => res.json(err).status(400));
   } catch (err) {
     return res.status(404).send(err);
   }
@@ -48,17 +51,18 @@ exports.updatePost = (req, res) => {
         id,
         {
           $addToSet: {
-            likers: req.body.user,
-            likersId: req.body.userId,
-          },
+            likers: req.body.userId
+          }
         },
         { new: true },
         (err, post) => {
           if (err) return res.status(400).send(err);
           return Post.find()
+            .populate("author")
+            .populate("comments.commenter")
             .sort({ timestamp: -1 })
-            .then((posts) => res.status(200).json(posts))
-            .catch((err) => res.json(err).status(400));
+            .then(posts => res.status(200).json(posts))
+            .catch(err => res.json(err).status(400));
         }
       );
     } catch (err) {
@@ -73,17 +77,18 @@ exports.updatePost = (req, res) => {
         id,
         {
           $pull: {
-            likers: req.body.user,
-            likersId: req.body.userId,
-          },
+            likers: req.body.userId
+          }
         },
         { new: true },
         (err, post) => {
           if (err) return res.status(400).send(err);
           return Post.find()
+            .populate("author")
+            .populate("comments.commenter")
             .sort({ timestamp: -1 })
-            .then((posts) => res.status(200).json(posts))
-            .catch((err) => res.json(err).status(400));
+            .then(posts => res.status(200).json(posts))
+            .catch(err => res.json(err).status(400));
         }
       );
     } catch (err) {
@@ -99,20 +104,21 @@ exports.updatePost = (req, res) => {
         {
           $push: {
             comments: {
-              commenterId: req.body.commenterId,
-              commenter: req.body.commenter,
+              commenter: req.body.commenterId,
               text: req.body.text,
-              timestamp: new Date().getTime(),
-            },
-          },
+              timestamp: new Date().getTime()
+            }
+          }
         },
         { new: true },
         (err, post) => {
           if (err) return res.status(400).send(err);
           return Post.find()
+            .populate("author")
+            .populate("comments.commenter")
             .sort({ timestamp: -1 })
-            .then((posts) => res.status(200).json(posts))
-            .catch((err) => res.json(err).status(400));
+            .then(posts => res.status(200).json(posts))
+            .catch(err => res.json(err).status(400));
         }
       );
     } catch (err) {
@@ -128,17 +134,19 @@ exports.updatePost = (req, res) => {
         {
           $pull: {
             comments: {
-              _id: req.body.commentId,
-            },
-          },
+              _id: req.body.commentId
+            }
+          }
         },
         { new: true },
         (err, post) => {
           if (err) return res.status(400).send(err);
           return Post.find()
+            .populate("author")
+            .populate("comments.commenter")
             .sort({ timestamp: -1 })
-            .then((posts) => res.status(200).json(posts))
-            .catch((err) => res.json(err).status(400));
+            .then(posts => res.status(200).json(posts))
+            .catch(err => res.json(err).status(400));
         }
       );
     } catch (err) {

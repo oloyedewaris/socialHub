@@ -22,7 +22,7 @@ const Comments = ({ post }) => {
         <li key={index}>
           <Comment
             actions={[
-              auth.user._id === post.authorId ? (
+              auth.user._id === post.author._id ? (
                 <DeleteTwoTone
                   onClick={() =>
                     onDeleteComment(post._id, comment._id, "deleteComment")
@@ -31,7 +31,7 @@ const Comments = ({ post }) => {
                 />
               ) : null
             ]}
-            author={comment.commenter}
+            author={`${comment.commenter.firstName} ${comment.commenter.lastName}`}
             avatar={null}
             content={comment.text}
             datetime={null}

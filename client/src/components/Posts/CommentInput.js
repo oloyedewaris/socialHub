@@ -10,16 +10,16 @@ const CommentInput = ({ postData }) => {
 
   const dispatch = useDispatch();
 
-  const { commenter, userId, commentId } = postData;
+  const { userId, commentId } = postData;
 
   const onInputChange = e => {
     setComment(e.target.value);
     setError(null);
   };
 
-  const onAddComment = (postId, action, commenter, commenterId, text) => {
+  const onAddComment = (postId, action, commenterId, text) => {
     if (Comment !== "") {
-      dispatch(addComment(postId, action, commenter, commenterId, text));
+      dispatch(addComment(postId, action, commenterId, text));
     } else {
       setError("Please enter a text to comment");
     }
@@ -45,7 +45,7 @@ const CommentInput = ({ postData }) => {
           size="large"
           enterButton="Comment"
           onSearch={() =>
-            onAddComment(commentId, "addComment", commenter, userId, Comment)
+            onAddComment(commentId, "addComment", userId, Comment)
           }
         />
       </Space>

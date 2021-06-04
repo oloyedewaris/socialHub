@@ -11,7 +11,6 @@ const RightMenu = ({ mode, onClose }) => {
 
   const onLogout = () => {
     dispatch(logout());
-    onClose();
   };
 
   return (

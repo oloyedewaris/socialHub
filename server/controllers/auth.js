@@ -14,38 +14,64 @@ exports.loginUser = (req, res) => {
     return res.status(400).json("Please enter all field");
 
   //Check for existing user
-  User.findOne({ email }).then(user => {
-    if (!user) return res.status(400).json("Email not found");
+  User.findOne({ email })
+    .populate("followersId")
+    .populate("followingId")
+    .then(user => {
+      if (!user) return res.status(400).json("Email not found");
 
-    //Compare user's password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (!isMatch) return res.status(400).json("Invalid password");
+      //Compare user's password
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (!isMatch) return res.status(400).json("Invalid password");
 
-      //Sign a jwt token
-      jwt.sign({ id: user.id }, "waris", { expiresIn: 3600 }, (err, token) => {
-        if (err) throw err;
-        res.json({
-          token,
-          user: {
-            _id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            bio: user.bio,
-            followersId: user.followersId,
-            followers: user.followers,
-            followingId: user.followingId,
-            following: user.following,
-            registeredAt: user.registeredAt
+        //Sign a jwt token
+        jwt.sign(
+          { id: user._id },
+          "waris",
+          { expiresIn: 3600 },
+          (err, token) => {
+            if (err) throw err;
+            res.status(200).json({
+              token,
+              user: {
+                avatarColor: user.avatarColor,
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                bio: user.bio,
+                followersId: user.followersId,
+                followingId: user.followingId,
+                registeredAt: user.registeredAt
+              }
+            });
           }
-        });
+        );
       });
     });
-  });
 };
 
 exports.registerUser = (req, res) => {
   const { firstName, lastName, email, password } = req.body;
+
+  const colors = [
+    "red",
+    "yellow",
+    "green",
+    "blue",
+    "purple",
+    "black",
+    "orange",
+    "brown"
+  ];
+
+  const getRandomColor = () => {
+    const min = Math.ceil(0);
+    const max = Math.floor(colors.length);
+    return Math.floor(Math.random() * (max - min) + min);
+  };
+
+  const color = colors[getRandomColor()];
 
   //Converting javascript date to human understandable
   const d = new Date();
@@ -80,6 +106,7 @@ exports.registerUser = (req, res) => {
 
     //Create a new user
     const newUser = new User({
+      avatarColor: color,
       firstName,
       lastName,
       email,
@@ -94,31 +121,34 @@ exports.registerUser = (req, res) => {
         newUser.password = hash;
         newUser
           .save()
-          .then(user => {
+          .then(firstUser => {
             //sign a jwt token
             jwt.sign(
-              { id: user.id },
+              { id: firstUser._id },
               "waris",
               { expiresIn: 3600 },
               (err, token) => {
                 if (err) throw err;
-                res
-                  .json({
-                    token,
-                    user: {
-                      _id: user._id,
-                      firstName: user.firstName,
-                      lastName: user.lastName,
-                      email: user.email,
-                      bio: user.bio,
-                      followersId: user.followersId,
-                      followers: user.followers,
-                      followingId: user.followingId,
-                      following: user.following,
-                      registeredAt: user.registeredAt
-                    }
-                  })
-                  .status(201);
+                return User.findById(firstUser._id)
+                  .populate("followersId")
+                  .populate("followingId")
+                  .select("-password")
+                  .then(user =>
+                    res.status(201).json({
+                      token,
+                      user: {
+                        avatarColor: user.avatarColor,
+                        _id: user._id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        bio: user.bio,
+                        followersId: user.followersId,
+                        followingId: user.followingId,
+                        registeredAt: user.registeredAt
+                      }
+                    })
+                  );
               }
             );
           })

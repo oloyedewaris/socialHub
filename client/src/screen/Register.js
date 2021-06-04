@@ -97,9 +97,9 @@ const RegisterUser = () => {
   };
 
   return (
-    <div className="container">
+    <div>
       {!redirect ? (
-        <div>
+        <div className="container">
           <h1 className="login-header">Register</h1>
           <Form className="form">
             {msg ? (

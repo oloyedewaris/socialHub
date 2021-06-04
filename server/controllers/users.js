@@ -32,10 +32,10 @@ exports.getAllUsers = (req, res) => {
 
 exports.followings = (req, res) => {
   const { id } = req.params;
-  const { followingName, followingId } = req.body;
+  const { followingId } = req.body;
 
-  if (!followingName || !followingId) {
-    return res.status(404).json({ message: "Nothing found" });
+  if (!followingId) {
+    return res.status(404).json({ message: "No ID found" });
   }
 
   try {
@@ -43,7 +43,6 @@ exports.followings = (req, res) => {
       id,
       {
         $addToSet: {
-          following: followingName,
           followingId: followingId
         }
       },
@@ -53,6 +52,8 @@ exports.followings = (req, res) => {
           return res.status(400).json(err);
         }
         return User.find()
+          .populate("followersId")
+          .populate("followingId")
           .select("-password")
           .sort({ timestamp: -1 })
           .then(users => {
@@ -76,9 +77,9 @@ exports.followings = (req, res) => {
 
 exports.unfollowings = (req, res) => {
   const { id } = req.params;
-  const { unfollowingName, unfollowingId } = req.body;
+  const { unfollowingId } = req.body;
 
-  if (!unfollowingName || !unfollowingId) {
+  if (!unfollowingId) {
     return res.status(404).json({ message: "Nothing found" });
   }
 
@@ -87,7 +88,6 @@ exports.unfollowings = (req, res) => {
       id,
       {
         $pull: {
-          following: unfollowingName,
           followingId: unfollowingId
         }
       },
@@ -97,6 +97,8 @@ exports.unfollowings = (req, res) => {
           return res.status(400).json(err);
         }
         return User.find()
+          .populate("followersId")
+          .populate("followingId")
           .select("-password")
           .sort({ timestamp: -1 })
           .then(users => {
@@ -120,10 +122,10 @@ exports.unfollowings = (req, res) => {
 
 exports.followers = (req, res) => {
   const { id } = req.params;
-  const { followerName, followerId } = req.body;
+  const { followerId } = req.body;
 
-  if (!followerName || !followerId) {
-    return res.status(404).json({ message: "Nothing found" });
+  if (!followerId) {
+    return res.status(404).json({ message: "No ID found" });
   }
 
   try {
@@ -131,7 +133,6 @@ exports.followers = (req, res) => {
       id,
       {
         $addToSet: {
-          followers: followerName,
           followersId: followerId
         }
       },
@@ -141,6 +142,8 @@ exports.followers = (req, res) => {
           return res.status(400).json(err);
         }
         return User.find()
+          .populate("followersId")
+          .populate("followingId")
           .select("-password")
           .sort({ timestamp: -1 })
           .then(users => {
@@ -164,9 +167,9 @@ exports.followers = (req, res) => {
 
 exports.unfollowers = (req, res) => {
   const { id } = req.params;
-  const { unfollowerName, unfollowerId } = req.body;
+  const { unfollowerId } = req.body;
 
-  if (!unfollowerName || !unfollowerId) {
+  if (!unfollowerId) {
     return res.status(404).json({ message: "No ID found" });
   }
 
@@ -175,7 +178,6 @@ exports.unfollowers = (req, res) => {
       id,
       {
         $pull: {
-          followers: unfollowerName,
           followersId: unfollowerId
         }
       },
@@ -185,6 +187,8 @@ exports.unfollowers = (req, res) => {
           return res.status(400).json(err);
         }
         return User.find()
+          .populate("followersId")
+          .populate("followingId")
           .select("-password")
           .sort({ timestamp: -1 })
           .then(users => {
@@ -252,6 +256,8 @@ exports.settings = (req, res) => {
                   err => {
                     if (err) throw err;
                     return User.findById(userId)
+                      .populate("followersId")
+                      .populate("followingId")
                       .select("-password")
                       .then(user => res.json(user))
                       .catch(err => res.status(404).json(err));
@@ -264,7 +270,7 @@ exports.settings = (req, res) => {
           if (FirstName && LastName) {
             //To change all previous posts
 
-            //Update all user information
+            //Update user names
             User.findByIdAndUpdate(
               userId,
               {
@@ -276,81 +282,9 @@ exports.settings = (req, res) => {
               { new: true, upsert: true },
               err => {
                 if (err) throw err;
-
-                //change all posts author
-                Post.find({ authorId: userId }).exec((err, posts) => {
-                  if (err) throw err;
-                  if (posts.length > 0) {
-                    Post.updateMany(
-                      { authorId: userId },
-                      {
-                        $set: {
-                          author: `${FirstName} ${LastName}`
-                        }
-                      },
-                      { new: true, upsert: true },
-                      err => {
-                        if (err) throw err;
-                      }
-                    );
-                  }
-                });
-
-                //check for and change name in comment
-                let postfound = false;
-                Post.find().exec((err, posts) => {
-                  //check for name for all comments
-                  posts.forEach(post => {
-                    post.comments.forEach(comment => {
-                      if (comment.commenterId === userId) {
-                        postfound = true;
-                      }
-                    });
-                  });
-
-                  //change name for all comments
-                  if (postfound) {
-                    Post.updateMany(
-                      {
-                        "comments.commenterId": userId
-                      },
-                      {
-                        $set: {
-                          "comments.$[elem].commenter": `${FirstName} ${LastName}`
-                        }
-                      },
-                      {
-                        arrayFilters: [{ "elem.commenterId": userId }],
-                        new: true,
-                        upsert: true
-                      },
-                      err => {
-                        if (err) throw err;
-                      }
-                    );
-                  }
-                });
-
-                //update the likes array
-                // Post.updateMany(
-                //   { likersId: [req.user._id] },
-                //   {
-                //     $pull: {
-                //       likers: req.user._id
-                //     },
-                //     $push: {
-                //       likers: `${FirstName} ${LastName}`
-                //     }
-                //   },
-                //   {
-                //     new: true
-                //   },
-                //   err => {
-                //     if (err) throw err;
-                //   }
-                // );
-
                 return User.findById(userId)
+                  .populate("followersId")
+                  .populate("followingId")
                   .select("-password")
                   .then(user => res.json(user))
                   .catch(err => res.status(404).json(err));
@@ -370,6 +304,8 @@ exports.settings = (req, res) => {
               err => {
                 if (err) throw err;
                 return User.findById(userId)
+                  .populate("followersId")
+                  .populate("followingId")
                   .select("-password")
                   .then(user => res.json(user))
                   .catch(err => res.status(404).json(err));
@@ -402,6 +338,8 @@ exports.settings = (req, res) => {
                 err => {
                   if (err) throw err;
                   return User.findById(userId)
+                    .populate("followersId")
+                    .populate("followingId")
                     .select("-password")
                     .then(user => res.json(user))
                     .catch(err => res.status(404).json(err));

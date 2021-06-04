@@ -37,12 +37,12 @@ const PostsFeed = () => {
     dispatch(deletePost(postId));
   };
 
-  const onLikeClick = (postId, user, userId) => {
-    dispatch(updatePostLikes(postId, "like", user, userId));
+  const onLikeClick = (postId, userId) => {
+    dispatch(updatePostLikes(postId, "like", userId));
   };
 
-  const onUnlikeClick = (postId, user, userId) => {
-    dispatch(updatePostLikes(postId, "unlike", user, userId));
+  const onUnlikeClick = (postId, userId) => {
+    dispatch(updatePostLikes(postId, "unlike", userId));
   };
 
   return (
@@ -72,68 +72,70 @@ const PostsFeed = () => {
                         <b>Next page</b>
                       </div>
                     }
-                    renderItem={(post, i) => (
-                      <List.Item
-                        key={i}
-                        actions={[
-                          <div>
-                            {!post.likersId.includes(auth.user._id) ? (
-                              <Button
-                                disabled={updatingPostLike}
-                                onClick={() => {
-                                  onLikeClick(
-                                    post._id,
-                                    `${auth.user.firstName} ${auth.user.lastName}`,
-                                    auth.user._id
-                                  );
+                    renderItem={(post, i) => {
+                      return (
+                        <List.Item
+                          key={i}
+                          actions={[
+                            <div>
+                              {!post.likers.includes(auth.user._id) ? (
+                                <Button
+                                  disabled={updatingPostLike}
+                                  onClick={() => {
+                                    onLikeClick(post._id, auth.user._id);
+                                  }}
+                                >
+                                  {`${post.likers.length} `}
+                                  <LikeOutlined />
+                                </Button>
+                              ) : (
+                                <Button
+                                  disabled={updatingPostLike}
+                                  onClick={() => {
+                                    onUnlikeClick(post._id, auth.user._id);
+                                  }}
+                                >
+                                  {`${post.likers.length} `}
+                                  <LikeFilled />
+                                </Button>
+                              )}
+                            </div>,
+                            <Button
+                              onClick={() => {
+                                setRoute("comments");
+                                setCommentIndex(i);
+                              }}
+                            >
+                              {`${post.comments.length} `}
+                              <CommentOutlined />
+                            </Button>
+                          ]}
+                          extra={
+                            auth.user._id === posts[i].author._id ? (
+                              <DeleteTwoTone
+                                onClick={() => onDeletePost(posts[i]._id)}
+                                twoToneColor="red"
+                              />
+                            ) : null
+                          }
+                        >
+                          <List.Item.Meta
+                            avatar={
+                              <Avatar
+                                style={{
+                                  backgroundColor: post.author.avatarColor
                                 }}
                               >
-                                {`${post.likersId.length} `}
-                                <LikeOutlined />
-                              </Button>
-                            ) : (
-                              <Button
-                                disabled={updatingPostLike}
-                                onClick={() => {
-                                  onUnlikeClick(
-                                    post._id,
-                                    `${auth.user.firstName} ${auth.user.lastName}`,
-                                    auth.user._id
-                                  );
-                                }}
-                              >
-                                {`${post.likersId.length} `}
-                                <LikeFilled />
-                              </Button>
-                            )}
-                          </div>,
-                          <Button
-                            onClick={() => {
-                              setRoute("comments");
-                              setCommentIndex(i);
-                            }}
-                          >
-                            {`${post.comments.length} `}
-                            <CommentOutlined />
-                          </Button>
-                        ]}
-                        extra={
-                          auth.user._id === posts[i].authorId ? (
-                            <DeleteTwoTone
-                              onClick={() => onDeletePost(posts[i]._id)}
-                              twoToneColor="red"
-                            />
-                          ) : null
-                        }
-                      >
-                        <List.Item.Meta
-                          avatar={<Avatar>{post.author[0]}</Avatar>}
-                          title={post.author}
-                          description={timeAgo.format(post.postedTime)}
-                        ></List.Item.Meta>
-                        {post.text}
-                      </List.Item>
-                    )}
+                                {post.author.firstName[0]}
+                              </Avatar>
+                            }
+                            title={`${post.author.firstName} ${post.author.lastName}`}
+                            description={timeAgo.format(post.postedTime)}
+                          ></List.Item.Meta>
+                          {post.text}
+                        </List.Item>
+                      );
+                    }}
                   />
                 )
               ) : null}

@@ -3,50 +3,43 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
+  avatarColor: String,
   firstName: {
     type: String,
     trim: true,
-    required: true,
+    required: true
   },
   lastName: {
     type: String,
     trim: true,
-    required: true,
+    required: true
   },
   bio: {
     type: String,
-    trim: true,
+    trim: true
   },
   email: {
     type: String,
     required: true,
     trim: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   followersId: {
-    type: [String],
-    default: [],
-  },
-  followers: {
-    type: [String],
-    default: [],
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    default: []
   },
   followingId: {
-    type: [String],
-    default: [],
-  },
-  following: {
-    type: [String],
-    default: [],
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    default: []
   },
   registeredAt: {
     type: String,
-    required: true,
-  },
+    required: true
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);

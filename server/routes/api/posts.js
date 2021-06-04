@@ -26,9 +26,12 @@ router.patch("/:id", auth, postsController.updatePost);
 
 router.get("/", auth, (req, res) => {
   Post.find()
+    .populate("author")
+    .populate("comments.commenter")
     .sort({ timestamp: -1 })
-    .then((posts) => res.status(200).json(posts))
-    .catch((err) => res.json(err).status(400));
+    .exec()
+    .then(posts => res.status(200).json(posts))
+    .catch(err => res.json(err).status(400));
 });
 
 module.exports = router;

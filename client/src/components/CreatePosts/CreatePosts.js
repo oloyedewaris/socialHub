@@ -20,7 +20,6 @@ function CreatePosts() {
     if (Text !== "") {
       const newPost = {
         text: Text,
-        author: user.firstName + " " + user.lastName,
         authorId: user._id
       };
 

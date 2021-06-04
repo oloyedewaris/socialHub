@@ -32,7 +32,11 @@ const Profile = () => {
                   className="center-card center"
                   hoverable
                   cover={
-                    <Avatar className="center-avatar center" size={80}>
+                    <Avatar
+                      style={{ backgroundColor: user.avatarColor }}
+                      className="center-avatar center"
+                      size={80}
+                    >
                       {user.firstName[0]}
                     </Avatar>
                   }

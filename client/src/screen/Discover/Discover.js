@@ -23,20 +23,20 @@ const Discover = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const onAddFollowing = ({ userId, followingName, followingId }) => {
-    dispatch(addFollowing({ userId, followingName, followingId }));
+  const onAddFollowing = ({ userId, followingId }) => {
+    dispatch(addFollowing({ userId, followingId }));
   };
 
-  const onRemoveFollowing = ({ userId, unfollowingName, unfollowingId }) => {
-    dispatch(removeFollowing({ userId, unfollowingName, unfollowingId }));
+  const onRemoveFollowing = ({ userId, unfollowingId }) => {
+    dispatch(removeFollowing({ userId, unfollowingId }));
   };
 
-  const onAddFollower = ({ userId, followerName, followerId }) => {
-    dispatch(addFollower({ userId, followerName, followerId }));
+  const onAddFollower = ({ userId, followerId }) => {
+    dispatch(addFollower({ userId, followerId }));
   };
 
-  const onRemoveFollower = ({ userId, unfollowerName, unfollowerId }) => {
-    dispatch(removeFollower({ userId, unfollowerName, unfollowerId }));
+  const onRemoveFollower = ({ userId, unfollowerId }) => {
+    dispatch(removeFollower({ userId, unfollowerId }));
   };
 
   return (
@@ -53,7 +53,11 @@ const Discover = () => {
                     className="center-card"
                     hoverable
                     cover={
-                      <Avatar className="center-avatar center" size={70}>
+                      <Avatar
+                        style={{ backgroundColor: user.avatarColor }}
+                        className="center-avatar center"
+                        size={70}
+                      >
                         {user.firstName[0]}
                       </Avatar>
                     }
@@ -63,7 +67,7 @@ const Discover = () => {
                       description={user.email}
                     />
                   </Card>
-                  {user.followersId.includes(authUser._id) ? (
+                  {user.followersId.find(user => user._id === authUser._id) ? (
                     <Button
                       size="medium"
                       type="ghost"
@@ -71,12 +75,10 @@ const Discover = () => {
                       onClick={() => {
                         onRemoveFollower({
                           userId: user._id,
-                          unfollowerName: `${authUser.firstName} ${authUser.lastName}`,
                           unfollowerId: authUser._id
                         });
                         onRemoveFollowing({
                           userId: authUser._id,
-                          unfollowingName: `${user.firstName} ${user.lastName}`,
                           unfollowingId: user._id
                         });
                       }}
@@ -91,12 +93,10 @@ const Discover = () => {
                       onClick={() => {
                         onAddFollower({
                           userId: user._id,
-                          followerName: `${authUser.firstName} ${authUser.lastName}`,
                           followerId: authUser._id
                         });
                         onAddFollowing({
                           userId: authUser._id,
-                          followingName: `${user.firstName} ${user.lastName}`,
                           followingId: user._id
                         });
                       }}
