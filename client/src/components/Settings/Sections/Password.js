@@ -57,9 +57,6 @@ function Password() {
     if (NewPassword === ConfirmPassword) {
       dispatch(changeSettings(newUpdate));
       setError(null);
-      setNewPassword("");
-      setConfirmPassword("");
-      setPassword("");
     } else {
       setError("Password don't match");
     }

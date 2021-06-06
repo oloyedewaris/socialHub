@@ -52,8 +52,6 @@ function Email() {
 
     dispatch(changeSettings(newUpdate));
     setError(null);
-    setEmail("");
-    setPassword("");
   };
 
   return (

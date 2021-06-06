@@ -62,7 +62,15 @@ exports.registerUser = (req, res) => {
     "purple",
     "black",
     "orange",
-    "brown"
+    "brown",
+    "blueviolet",
+    "coral",
+    "chocolate",
+    "crimson",
+    "cyan",
+    "darkblue",
+    "darkcyan",
+    "pink"
   ];
 
   const getRandomColor = () => {

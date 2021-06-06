@@ -52,8 +52,6 @@ function Bio(props) {
 
     dispatch(changeSettings(newUpdate));
     setError(null);
-    setBio("");
-    setPassword("");
   };
 
   return (
@@ -64,7 +62,7 @@ function Bio(props) {
             <ArrowLeftOutlined />
           </Link>
         </div>
-        {Error ? <Alert mesage={Error} type="error" /> : null}
+        {Error ? <Alert message={Error} type="error" /> : null}
         <div className="settings-container">
           <h4>Edit Bio</h4>
           <div className="settings-space">

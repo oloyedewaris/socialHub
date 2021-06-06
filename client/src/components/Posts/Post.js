@@ -20,7 +20,7 @@ const Post = props => {
   const timeAgo = new TimeAgo("en-US");
 
   const dispatch = useDispatch();
-  const posts = useSelector(state => state.post.posts);
+  let posts = useSelector(state => state.post.posts);
   const updatingPostLike = useSelector(state => state.post.updatingPostLike);
   const auth = useSelector(state => state.auth);
   const [Route, setRoute] = useState("comment");
@@ -38,6 +38,19 @@ const Post = props => {
   };
 
   const i = props.commentIndex;
+
+  const { user } = auth;
+
+  var filteredPost;
+  if (posts) {
+    filteredPost = posts.filter(post => {
+      return user._id === post.author._id;
+    });
+  }
+
+  if (props.commingFrom === "/profile") {
+    posts = filteredPost;
+  }
 
   return (
     <div>

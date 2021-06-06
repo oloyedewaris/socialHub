@@ -60,9 +60,6 @@ function Name() {
 
     dispatch(changeSettings(newUpdate));
     setError(null);
-    setFirstName("");
-    setLastName("");
-    setPassword("");
   };
 
   return (

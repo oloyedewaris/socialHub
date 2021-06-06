@@ -51,75 +51,78 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
   }
 
   return (
-    <List
-      itemLayout="vertical"
-      size="large"
-      pagination={{
-        pageSize: 3
-      }}
-      dataSource={filteredPost}
-      footer={
-        <div>
-          <b>Next page</b>
-        </div>
-      }
-      renderItem={(post, i) => (
-        <List.Item
-          key={i}
-          actions={[
-            <div>
-              {!post.likers.includes(auth.user._id) ? (
-                <Button
-                  disabled={updatingPostLike}
-                  onClick={() => {
-                    onLikeClick(post._id, auth.user._id);
-                  }}
-                >
-                  {`${post.likers.length} `}
-                  <LikeOutlined />
-                </Button>
-              ) : (
-                <Button
-                  disabled={updatingPostLike}
-                  onClick={() => {
-                    onUnlikeClick(post._id, auth.user._id);
-                  }}
-                >
-                  {`${post.likers.length} `}
-                  <LikeFilled />
-                </Button>
-              )}
-            </div>,
-            <Button
-              onClick={() => {
-                setroute("comments");
-                setcommentIndex(i);
-              }}
-            >
-              {`${post.comments.length} `}
-              <CommentOutlined />
-            </Button>
-          ]}
-          extra={
-            <DeleteTwoTone
-              onClick={() => onDeletePost(post._id)}
-              twoToneColor="red"
-            />
-          }
-        >
-          <List.Item.Meta
-            avatar={
-              <Avatar style={{ backgroundColor: post.author.avatarColor }}>
-                {post.author.firstName[0]}
-              </Avatar>
+    <div className="posts-list">
+      <h3>Profile Feeds</h3>
+      <List
+        itemLayout="vertical"
+        size="large"
+        pagination={{
+          pageSize: 3
+        }}
+        dataSource={filteredPost}
+        footer={
+          <div>
+            <b>Next page</b>
+          </div>
+        }
+        renderItem={(post, i) => (
+          <List.Item
+            key={i}
+            actions={[
+              <div>
+                {!post.likers.includes(auth.user._id) ? (
+                  <Button
+                    disabled={updatingPostLike}
+                    onClick={() => {
+                      onLikeClick(post._id, auth.user._id);
+                    }}
+                  >
+                    {`${post.likers.length} `}
+                    <LikeOutlined />
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={updatingPostLike}
+                    onClick={() => {
+                      onUnlikeClick(post._id, auth.user._id);
+                    }}
+                  >
+                    {`${post.likers.length} `}
+                    <LikeFilled />
+                  </Button>
+                )}
+              </div>,
+              <Button
+                onClick={() => {
+                  setroute("comments");
+                  setcommentIndex(i);
+                }}
+              >
+                {`${post.comments.length} `}
+                <CommentOutlined />
+              </Button>
+            ]}
+            extra={
+              <DeleteTwoTone
+                onClick={() => onDeletePost(post._id)}
+                twoToneColor="red"
+              />
             }
-            title={`${post.author.firstName} ${post.author.lastName}`}
-            description={timeAgo.format(post.postedTime)}
-          ></List.Item.Meta>
-          {post.text}
-        </List.Item>
-      )}
-    />
+          >
+            <List.Item.Meta
+              avatar={
+                <Avatar style={{ backgroundColor: post.author.avatarColor }}>
+                  {post.author.firstName[0]}
+                </Avatar>
+              }
+              title={`${post.author.firstName} ${post.author.lastName}`}
+              description={timeAgo.format(post.postedTime)}
+            ></List.Item.Meta>
+            {post.text}
+          </List.Item>
+        )}
+      />
+    </div>
   );
 };
 

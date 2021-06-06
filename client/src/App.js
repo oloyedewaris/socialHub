@@ -4,7 +4,6 @@ import Login from "./screen/Login";
 import RegisterUser from "./screen/Register";
 import Discover from "./screen/Discover/Discover";
 import Follow from "./screen/Follow/Follow";
-import HomePage from "./screen/HomePage/HomePage";
 import Profile from "./components/Profile/Profile";
 import auth from "./hoc/auth";
 import Footer from "./components/Footer/Footer";
@@ -17,6 +16,7 @@ import Name from "./components/Settings/Sections/Name";
 import Email from "./components/Settings/Sections/Email";
 import Password from "./components/Settings/Sections/Password";
 import Bio from "./components/Settings/Sections/Bio";
+import PostsFeed from "./components/Posts/PostsFeed";
 
 const App = () => {
   return (
@@ -28,7 +28,7 @@ const App = () => {
           <Route exact path="/register" component={RegisterUser} />
           <Route exact path="/discover" component={auth(Discover)} />
           <Route exact path="/follow" component={auth(Follow)} />
-          <Route exact path="/home" component={auth(HomePage)} />
+          <Route exact path="/home" component={auth(PostsFeed)} />
           <Route exact path="/profile" component={auth(Profile)} />
           <Route exact path="/profile/settings" component={auth(Settings)} />
           <Route exact path="/profile/settings/name" component={auth(Name)} />

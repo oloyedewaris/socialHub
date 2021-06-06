@@ -11,6 +11,8 @@ import {
   REMOVE_FOLLOWING,
   CHANGE_SETTINGS
 } from "../actions/types";
+// import history from "../../Utils/history";
+import { createBrowserHistory } from "history";
 
 const initialState = {
   token: null,
@@ -61,6 +63,7 @@ export default function(state = initialState, action) {
       };
     case CHANGE_SETTINGS:
       alert("Settings Updated Succesfully");
+      createBrowserHistory().push("/profile/settings");
       return {
         ...state,
         user: action.payload

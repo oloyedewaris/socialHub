@@ -97,7 +97,6 @@ const Profile = () => {
                 </Button>
               </p>
             </Card>
-
             <div>
               <CreatePosts />
               <ProfileFeeds

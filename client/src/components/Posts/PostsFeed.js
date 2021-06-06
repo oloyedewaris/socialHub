@@ -16,6 +16,7 @@ import {
 } from "../../Flux/actions/postActions";
 import Post from "./Post";
 import CreatePosts from "../CreatePosts/CreatePosts";
+import Wrapper from "../../hoc/navWrapper";
 
 const PostsFeed = () => {
   TimeAgo.addLocale(en);
@@ -51,96 +52,99 @@ const PostsFeed = () => {
         <Post commingFrom="/home" commentIndex={CommentIndex} />
       ) : (
         <div>
-          <CreatePosts />
-          {postLoading ? (
-            <Skeleton active paragraph={{ row: 5 }} />
-          ) : (
-            <div classsName="posts-list">
-              {posts ? (
-                posts.length === 0 ? (
-                  <h3>No post to show, make a post to appear here</h3>
-                ) : (
-                  <List
-                    itemLayout="vertical"
-                    size="large"
-                    pagination={{
-                      pageSize: 5
-                    }}
-                    dataSource={posts}
-                    footer={
-                      <div>
-                        <b>Next page</b>
-                      </div>
-                    }
-                    renderItem={(post, i) => {
-                      return (
-                        <List.Item
-                          key={i}
-                          actions={[
-                            <div>
-                              {!post.likers.includes(auth.user._id) ? (
-                                <Button
-                                  disabled={updatingPostLike}
-                                  onClick={() => {
-                                    onLikeClick(post._id, auth.user._id);
-                                  }}
-                                >
-                                  {`${post.likers.length} `}
-                                  <LikeOutlined />
-                                </Button>
-                              ) : (
-                                <Button
-                                  disabled={updatingPostLike}
-                                  onClick={() => {
-                                    onUnlikeClick(post._id, auth.user._id);
-                                  }}
-                                >
-                                  {`${post.likers.length} `}
-                                  <LikeFilled />
-                                </Button>
-                              )}
-                            </div>,
-                            <Button
-                              onClick={() => {
-                                setRoute("comments");
-                                setCommentIndex(i);
-                              }}
-                            >
-                              {`${post.comments.length} `}
-                              <CommentOutlined />
-                            </Button>
-                          ]}
-                          extra={
-                            auth.user._id === posts[i].author._id ? (
-                              <DeleteTwoTone
-                                onClick={() => onDeletePost(posts[i]._id)}
-                                twoToneColor="red"
-                              />
-                            ) : null
-                          }
-                        >
-                          <List.Item.Meta
-                            avatar={
-                              <Avatar
-                                style={{
-                                  backgroundColor: post.author.avatarColor
+          <Wrapper>
+            <CreatePosts />
+            {postLoading ? (
+              <Skeleton active paragraph={{ row: 5 }} />
+            ) : (
+              <div className="posts-list">
+                <h3>Feeds</h3>
+                {posts ? (
+                  posts.length === 0 ? (
+                    <h3>No post to show, make a post to appear here</h3>
+                  ) : (
+                    <List
+                      itemLayout="vertical"
+                      size="large"
+                      pagination={{
+                        pageSize: 8
+                      }}
+                      dataSource={posts}
+                      footer={
+                        <div>
+                          <b>Next page</b>
+                        </div>
+                      }
+                      renderItem={(post, i) => {
+                        return (
+                          <List.Item
+                            key={i}
+                            actions={[
+                              <div>
+                                {!post.likers.includes(auth.user._id) ? (
+                                  <Button
+                                    disabled={updatingPostLike}
+                                    onClick={() => {
+                                      onLikeClick(post._id, auth.user._id);
+                                    }}
+                                  >
+                                    {`${post.likers.length} `}
+                                    <LikeOutlined />
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    disabled={updatingPostLike}
+                                    onClick={() => {
+                                      onUnlikeClick(post._id, auth.user._id);
+                                    }}
+                                  >
+                                    {`${post.likers.length} `}
+                                    <LikeFilled />
+                                  </Button>
+                                )}
+                              </div>,
+                              <Button
+                                onClick={() => {
+                                  setRoute("comments");
+                                  setCommentIndex(i);
                                 }}
                               >
-                                {post.author.firstName[0]}
-                              </Avatar>
+                                {`${post.comments.length} `}
+                                <CommentOutlined />
+                              </Button>
+                            ]}
+                            extra={
+                              auth.user._id === posts[i].author._id ? (
+                                <DeleteTwoTone
+                                  onClick={() => onDeletePost(posts[i]._id)}
+                                  twoToneColor="red"
+                                />
+                              ) : null
                             }
-                            title={`${post.author.firstName} ${post.author.lastName}`}
-                            description={timeAgo.format(post.postedTime)}
-                          ></List.Item.Meta>
-                          {post.text}
-                        </List.Item>
-                      );
-                    }}
-                  />
-                )
-              ) : null}
-            </div>
-          )}
+                          >
+                            <List.Item.Meta
+                              avatar={
+                                <Avatar
+                                  style={{
+                                    backgroundColor: post.author.avatarColor
+                                  }}
+                                >
+                                  {post.author.firstName[0]}
+                                </Avatar>
+                              }
+                              title={`${post.author.firstName} ${post.author.lastName}`}
+                              description={timeAgo.format(post.postedTime)}
+                            ></List.Item.Meta>
+                            {post.text}
+                          </List.Item>
+                        );
+                      }}
+                    />
+                  )
+                ) : null}
+              </div>
+            )}
+          </Wrapper>
         </div>
       )}
     </div>

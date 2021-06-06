@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, List } from "antd";
 import { Link } from "react-router-dom";
 import Wrapper from "../../hoc/navWrapper";
@@ -18,11 +17,6 @@ function Settings() {
   return (
     <Wrapper>
       <div style={{ margin: 15 }}>
-        <div style={{ margin: "10px" }}>
-          <Link to="/profile">
-            <ArrowLeftOutlined />
-          </Link>
-        </div>
         <List direction="vertical">
           <List.Item>
             <div>Name</div>
