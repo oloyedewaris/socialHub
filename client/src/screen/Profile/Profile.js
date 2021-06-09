@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Card, Avatar, Button } from "antd";
 import { Link } from "react-router-dom";
-import Post from "../Posts/Post";
-import CreatePosts from "../CreatePosts/CreatePosts";
+import Post from "../../components/Posts/Post";
+import CreatePosts from "../../components/CreatePosts/CreatePosts";
 import Wrapper from "../../hoc/navWrapper";
 import ProfileFeeds from "./ProfileFeeds";
 

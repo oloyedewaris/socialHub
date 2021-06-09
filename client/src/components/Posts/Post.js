@@ -10,7 +10,7 @@ import {
   ArrowLeftOutlined
 } from "@ant-design/icons";
 import { updatePostLikes } from "../../Flux/actions/postActions";
-import Profile from "../Profile/Profile";
+import Profile from "../../screen/Profile/Profile";
 import PostsFeed from "./PostsFeed";
 import Comments from "./Comments";
 import CommentInput from "./CommentInput";
@@ -60,62 +60,64 @@ const Post = props => {
             <ArrowLeftOutlined onClick={() => setRoute(props.commingFrom)} />{" "}
             back
           </div>
-          <List
-            dataSource={["1"]}
-            renderItem={() => (
-              <List.Item
-                actions={[
-                  !posts[i].likers.includes(auth.user._id) ? (
-                    <Button
-                      disabled={updatingPostLike}
-                      onClick={() => {
-                        onLikeClick(posts[i]._id, auth.user._id);
-                      }}
-                    >
-                      {`${posts[i].likers.length} `}
-                      <LikeOutlined />
+          <div className="posts-comment">
+            <List
+              dataSource={["1"]}
+              renderItem={() => (
+                <List.Item
+                  actions={[
+                    !posts[i].likers.includes(auth.user._id) ? (
+                      <Button
+                        disabled={updatingPostLike}
+                        onClick={() => {
+                          onLikeClick(posts[i]._id, auth.user._id);
+                        }}
+                      >
+                        {`${posts[i].likers.length} `}
+                        <LikeOutlined />
+                      </Button>
+                    ) : (
+                      <Button
+                        disabled={updatingPostLike}
+                        onClick={() => {
+                          onUnlikeClick(posts[i]._id, auth.user._id);
+                        }}
+                      >
+                        {`${posts[i].likers.length} `}
+                        <LikeFilled />
+                      </Button>
+                    ),
+                    <Button>
+                      {`${posts[i].comments.length} `}
+                      <CommentOutlined />
                     </Button>
-                  ) : (
-                    <Button
-                      disabled={updatingPostLike}
-                      onClick={() => {
-                        onUnlikeClick(posts[i]._id, auth.user._id);
-                      }}
-                    >
-                      {`${posts[i].likers.length} `}
-                      <LikeFilled />
-                    </Button>
-                  ),
-                  <Button>
-                    {`${posts[i].comments.length} `}
-                    <CommentOutlined />
-                  </Button>
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      style={{ backgroundColor: posts[i].author.avatarColor }}
-                    >
-                      {posts[i].author.firstName[0]}
-                    </Avatar>
-                  }
-                  title={`${posts[i].author.firstName} ${posts[i].author.lastName}`}
-                  description={timeAgo.format(posts[i].postedTime)}
-                />
-                {posts[i].text}
-              </List.Item>
-            )}
-          />
-          <div>
-            <Comments post={posts[i]} />
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        style={{ backgroundColor: posts[i].author.avatarColor }}
+                      >
+                        {posts[i].author.firstName[0]}
+                      </Avatar>
+                    }
+                    title={`${posts[i].author.firstName} ${posts[i].author.lastName}`}
+                    description={timeAgo.format(posts[i].postedTime)}
+                  />
+                  {posts[i].text}
+                </List.Item>
+              )}
+            />
+            <div>
+              <Comments post={posts[i]} />
+            </div>
+            <CommentInput
+              postData={{
+                commentId: posts[i]._id,
+                userId: auth.user._id
+              }}
+            />
           </div>
-          <CommentInput
-            postData={{
-              commentId: posts[i]._id,
-              userId: auth.user._id
-            }}
-          />
         </div>
       ) : Route === "/profile" ? (
         <Profile />

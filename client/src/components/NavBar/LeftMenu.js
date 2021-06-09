@@ -19,7 +19,7 @@ const LeftMenu = ({ mode, onClose }) => {
           target="_blank"
           onClick={onClose}
         >
-          Portfolio
+          My Portfolio
         </a>
       </Menu.Item>
       <SubMenu title={<span>More</span>}>

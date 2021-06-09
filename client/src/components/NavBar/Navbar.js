@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <nav className="menuBar">
       <div className="logo">
-        <a href="/">Social Space</a>
+        <a href="/">SocialHub</a>
       </div>
       <div className="menuCon">
         <div className="leftMenu">
@@ -32,7 +32,7 @@ const Navbar = () => {
           <MenuFoldOutlined type="align-right" />
         </Button>
         <Drawer
-          title="Social Space"
+          title="SocialHub"
           placement="right"
           closable={true}
           onClose={onClose}

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Avatar, Skeleton } from "antd";
+import { Button, Card, Avatar, Skeleton, notification } from "antd";
 import {
   getAllUsers,
   addFollower,
@@ -37,6 +37,22 @@ const Discover = () => {
 
   const onRemoveFollower = ({ userId, unfollowerId }) => {
     dispatch(removeFollower({ userId, unfollowerId }));
+  };
+
+  const openFollowNotification = (placement, person) => {
+    notification.success({
+      message: "Follow Notification",
+      description: `You just followed ${person}`,
+      placement
+    });
+  };
+
+  const openUnfollowNotification = (placement, person) => {
+    notification.success({
+      message: "Unfollow Notification",
+      description: `You just unfollowed ${person}`,
+      placement
+    });
   };
 
   return (
@@ -81,6 +97,7 @@ const Discover = () => {
                           userId: authUser._id,
                           unfollowingId: user._id
                         });
+                        openUnfollowNotification("topLeft", user.firstName);
                       }}
                     >
                       UnFollow
@@ -99,6 +116,7 @@ const Discover = () => {
                           userId: authUser._id,
                           followingId: user._id
                         });
+                        openFollowNotification("topLeft", user.firstName);
                       }}
                     >
                       Follow

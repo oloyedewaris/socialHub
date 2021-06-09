@@ -4,7 +4,7 @@ import Login from "./screen/Login";
 import RegisterUser from "./screen/Register";
 import Discover from "./screen/Discover/Discover";
 import Follow from "./screen/Follow/Follow";
-import Profile from "./components/Profile/Profile";
+import Profile from "./screen/Profile/Profile";
 import auth from "./hoc/auth";
 import Footer from "./components/Footer/Footer";
 import Contact from "./components/Details/Contact";

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
-import { List, Avatar, Button } from "antd";
+import { List, Avatar, Button, Popconfirm, message } from "antd";
 import {
   LikeFilled,
   LikeOutlined,
@@ -36,6 +36,7 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
 
   const onDeletePost = postId => {
     dispatch(deletePost(postId));
+    message.info("Post deleted");
   };
 
   TimeAgo.addLocale(en);
@@ -103,10 +104,15 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
               </Button>
             ]}
             extra={
-              <DeleteTwoTone
-                onClick={() => onDeletePost(post._id)}
-                twoToneColor="red"
-              />
+              <Popconfirm
+                placement="left"
+                title="Are you sure you want to delete this Post"
+                onConfirm={() => onDeletePost(post._id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <DeleteTwoTone twoToneColor="red" />
+              </Popconfirm>
             }
           >
             <List.Item.Meta

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, List, Avatar, Skeleton } from "antd";
+import { Button, List, Avatar, Skeleton, Popconfirm, message } from "antd";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useSelector, useDispatch } from "react-redux";
@@ -36,13 +36,14 @@ const PostsFeed = () => {
 
   const onDeletePost = postId => {
     dispatch(deletePost(postId));
+    message.info("Post deleted")
   };
 
-  const onLikeClick = (postId, userId) => {
+  const onLikeClick = ({ postId, userId }) => {
     dispatch(updatePostLikes(postId, "like", userId));
   };
 
-  const onUnlikeClick = (postId, userId) => {
+  const onUnlikeClick = ({ postId, userId }) => {
     dispatch(updatePostLikes(postId, "unlike", userId));
   };
 
@@ -85,7 +86,10 @@ const PostsFeed = () => {
                                   <Button
                                     disabled={updatingPostLike}
                                     onClick={() => {
-                                      onLikeClick(post._id, auth.user._id);
+                                      onLikeClick({
+                                        postId: post._id,
+                                        userId: auth.user._id
+                                      });
                                     }}
                                   >
                                     {`${post.likers.length} `}
@@ -95,7 +99,10 @@ const PostsFeed = () => {
                                   <Button
                                     disabled={updatingPostLike}
                                     onClick={() => {
-                                      onUnlikeClick(post._id, auth.user._id);
+                                      onUnlikeClick({
+                                        postId: post._id,
+                                        userId: auth.user._id
+                                      });
                                     }}
                                   >
                                     {`${post.likers.length} `}
@@ -115,10 +122,15 @@ const PostsFeed = () => {
                             ]}
                             extra={
                               auth.user._id === posts[i].author._id ? (
-                                <DeleteTwoTone
-                                  onClick={() => onDeletePost(posts[i]._id)}
-                                  twoToneColor="red"
-                                />
+                                <Popconfirm
+                                  placement="left"
+                                  title="Are you sure you want to delete this Post"
+                                  onConfirm={() => onDeletePost(posts[i]._id)}
+                                  okText="Yes"
+                                  cancelText="No"
+                                >
+                                  <DeleteTwoTone twoToneColor="red" />
+                                </Popconfirm>
                               ) : null
                             }
                           >

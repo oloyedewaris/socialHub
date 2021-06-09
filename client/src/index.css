@@ -16,6 +16,10 @@
   margin: 15px;
 }
 
+.posts-comment {
+  padding: 30px 50px;
+}
+
 .about {
   height: 150vh;
 }
@@ -125,15 +129,17 @@
   .form {
     width: 60%;
   }
-  body {
-    font-size: 0.9rem;
-    height: 100%;
+  .posts-comment {
+    padding: 20px 35px;
   }
 }
 
 @media screen and (max-width: 450px) {
   .form {
     width: 85%;
+  }
+  .posts-comment {
+    padding: 10px 20px;
   }
 }
 

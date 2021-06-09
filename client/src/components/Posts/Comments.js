@@ -1,5 +1,5 @@
 import React from "react";
-import { Comment, List } from "antd";
+import { Comment, List, Popconfirm, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteTwoTone } from "@ant-design/icons";
 import { deleteComment } from "../../Flux/actions/postActions";
@@ -10,6 +10,7 @@ const Comments = ({ post }) => {
 
   const onDeleteComment = (postId, commentId, action) => {
     dispatch(deleteComment(postId, commentId, action));
+    message("Comment deleted");
   };
 
   return (
@@ -23,12 +24,17 @@ const Comments = ({ post }) => {
           <Comment
             actions={[
               auth.user._id === post.author._id ? (
-                <DeleteTwoTone
-                  onClick={() =>
+                <Popconfirm
+                  placement="right"
+                  title="Are you sure you want to delete this Comment"
+                  onConfirm={() =>
                     onDeleteComment(post._id, comment._id, "deleteComment")
                   }
-                  twoToneColor="red"
-                />
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <DeleteTwoTone twoToneColor="red" />
+                </Popconfirm>
               ) : null
             ]}
             author={`${comment.commenter.firstName} ${comment.commenter.lastName}`}
