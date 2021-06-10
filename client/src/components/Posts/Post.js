@@ -2,16 +2,11 @@ import React, { useState, useEffect } from "react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useDispatch, useSelector } from "react-redux";
-import { List, Button, Avatar } from "antd";
-import {
-  LikeOutlined,
-  CommentOutlined,
-  LikeFilled,
-  ArrowLeftOutlined
-} from "@ant-design/icons";
-import { updatePostLikes } from "../../Flux/actions/postActions";
-import Profile from "../../screen/Profile/Profile";
-import PostsFeed from "./PostsFeed";
+import { useParams } from "react-router-dom";
+import { List, Button, Avatar, Spin } from "antd";
+import Wrapper from "../../hoc/navWrapper";
+import { LikeOutlined, CommentOutlined, LikeFilled } from "@ant-design/icons";
+import { updatePostLikes, getPosts } from "../../Flux/actions/postActions";
 import Comments from "./Comments";
 import CommentInput from "./CommentInput";
 
@@ -20,14 +15,26 @@ const Post = props => {
   const timeAgo = new TimeAgo("en-US");
 
   const dispatch = useDispatch();
-  let posts = useSelector(state => state.post.posts);
   const updatingPostLike = useSelector(state => state.post.updatingPostLike);
+  const posts = useSelector(state => state.post.posts);
   const auth = useSelector(state => state.auth);
-  const [Route, setRoute] = useState("comment");
+  const [post, setpost] = useState(null);
+  const postId = useParams().id;
 
   useEffect(() => {
+    dispatch(getPosts());
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (posts) {
+      posts.forEach(post => {
+        if (post._id === postId) {
+          setpost(post);
+        }
+      });
+    }
+  }, [posts]);
 
   const onLikeClick = (postId, userId) => {
     dispatch(updatePostLikes(postId, "like", userId));
@@ -37,94 +44,73 @@ const Post = props => {
     dispatch(updatePostLikes(postId, "unlike", userId));
   };
 
-  const i = props.commentIndex;
-
-  const { user } = auth;
-
-  var filteredPost;
-  if (posts) {
-    filteredPost = posts.filter(post => {
-      return user._id === post.author._id;
-    });
-  }
-
-  if (props.commingFrom === "/profile") {
-    posts = filteredPost;
-  }
-
   return (
-    <div>
-      {Route === "comment" ? (
-        <div style={{ margin: "15px" }}>
-          <div>
-            <ArrowLeftOutlined onClick={() => setRoute(props.commingFrom)} />{" "}
-            back
-          </div>
-          <div className="posts-comment">
-            <List
-              dataSource={["1"]}
-              renderItem={() => (
-                <List.Item
-                  actions={[
-                    !posts[i].likers.includes(auth.user._id) ? (
-                      <Button
-                        disabled={updatingPostLike}
-                        onClick={() => {
-                          onLikeClick(posts[i]._id, auth.user._id);
-                        }}
-                      >
-                        {`${posts[i].likers.length} `}
-                        <LikeOutlined />
-                      </Button>
-                    ) : (
-                      <Button
-                        disabled={updatingPostLike}
-                        onClick={() => {
-                          onUnlikeClick(posts[i]._id, auth.user._id);
-                        }}
-                      >
-                        {`${posts[i].likers.length} `}
-                        <LikeFilled />
-                      </Button>
-                    ),
-                    <Button>
-                      {`${posts[i].comments.length} `}
-                      <CommentOutlined />
+    <Wrapper>
+      {post ? (
+        <div className="posts-comment">
+          <List
+            dataSource={["1"]}
+            renderItem={() => (
+              <List.Item
+                actions={[
+                  !post.likers.includes(auth.user._id) ? (
+                    <Button
+                      disabled={updatingPostLike}
+                      onClick={() => {
+                        onLikeClick(post._id, auth.user._id);
+                      }}
+                    >
+                      {`${post.likers.length} `}
+                      <LikeOutlined />
                     </Button>
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        style={{ backgroundColor: posts[i].author.avatarColor }}
-                      >
-                        {posts[i].author.firstName[0]}
-                      </Avatar>
-                    }
-                    title={`${posts[i].author.firstName} ${posts[i].author.lastName}`}
-                    description={timeAgo.format(posts[i].postedTime)}
-                  />
-                  {posts[i].text}
-                </List.Item>
-              )}
-            />
-            <div>
-              <Comments post={posts[i]} />
-            </div>
-            <CommentInput
-              postData={{
-                commentId: posts[i]._id,
-                userId: auth.user._id
-              }}
-            />
+                  ) : (
+                    <Button
+                      disabled={updatingPostLike}
+                      onClick={() => {
+                        onUnlikeClick(post._id, auth.user._id);
+                      }}
+                    >
+                      {`${post.likers.length} `}
+                      <LikeFilled />
+                    </Button>
+                  ),
+                  <Button>
+                    {`${post.comments.length} `}
+                    <CommentOutlined />
+                  </Button>
+                ]}
+              >
+                <List.Item.Meta
+                  avatar={
+                    <Avatar
+                      style={{ backgroundColor: post.author.avatarColor }}
+                    >
+                      {post.author.firstName[0]}
+                    </Avatar>
+                  }
+                  title={`${post.author.firstName} ${post.author.lastName}`}
+                  description={timeAgo.format(post.postedTime)}
+                />
+                {post.text}
+              </List.Item>
+            )}
+          />
+          <div>
+            <Comments post={post} />
           </div>
+          <CommentInput
+            postData={{
+              commentId: post._id,
+              userId: auth.user._id
+            }}
+          />
         </div>
-      ) : Route === "/profile" ? (
-        <Profile />
-      ) : Route === "/home" ? (
-        <PostsFeed />
-      ) : null}
-    </div>
+      ) : (
+        <div className="loader">
+          <Spin size="large" />
+        </div>
+      )}
+    </Wrapper>
   );
 };
 

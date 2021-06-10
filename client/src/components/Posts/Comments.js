@@ -10,7 +10,7 @@ const Comments = ({ post }) => {
 
   const onDeleteComment = (postId, commentId, action) => {
     dispatch(deleteComment(postId, commentId, action));
-    message("Comment deleted");
+    // message("Comment deleted");
   };
 
   return (

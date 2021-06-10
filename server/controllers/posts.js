@@ -2,8 +2,8 @@ const Post = require("../models/Post");
 
 // // Posts Controllers // //
 
+//creates a new post
 exports.createPost = (req, res) => {
-  //Create a new post
   const newPost = new Post({
     author: req.body.authorId,
     comments: [],
@@ -26,6 +26,16 @@ exports.createPost = (req, res) => {
     .catch(err => res.status(400).send(err));
 };
 
+//get a post by id
+exports.getPostById = (req, res) => {
+  Post.findById(req.params.id)
+    .populate("author")
+    .populate("comments.commenter")
+    .then(post => res.status(200).json(post))
+    .catch(err => res.status(400).json(err));
+};
+
+//deletes a post
 exports.deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { List, Avatar, Button, Popconfirm, message } from "antd";
@@ -15,7 +16,7 @@ import {
   deletePost
 } from "../../Flux/actions/postActions";
 
-const ProfileFeeds = ({ setroute, setcommentIndex }) => {
+const ProfileFeeds = () => {
   useEffect(() => {
     dispatch(getPosts());
   }, []);
@@ -93,14 +94,11 @@ const ProfileFeeds = ({ setroute, setcommentIndex }) => {
                   </Button>
                 )}
               </div>,
-              <Button
-                onClick={() => {
-                  setroute("comments");
-                  setcommentIndex(i);
-                }}
-              >
-                {`${post.comments.length} `}
-                <CommentOutlined />
+              <Button>
+                <Link to={`/post/${post._id}`}>
+                  {`${post.comments.length} `}
+                  <CommentOutlined />
+                </Link>
               </Button>
             ]}
             extra={

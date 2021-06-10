@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./screen/Login";
 import RegisterUser from "./screen/Register";
 import Discover from "./screen/Discover/Discover";
@@ -17,6 +17,10 @@ import Email from "./components/Settings/Sections/Email";
 import Password from "./components/Settings/Sections/Password";
 import Bio from "./components/Settings/Sections/Bio";
 import PostsFeed from "./components/Posts/PostsFeed";
+import Post from "./components/Posts/Post";
+
+const loggedEmail = localStorage.getItem("email");
+const loggedPassword = localStorage.getItem("password");
 
 const App = () => {
   return (
@@ -24,11 +28,22 @@ const App = () => {
       <Navbar />
       <div>
         <Switch>
-          <Route exact path="/" component={Login} />
+          <Route
+            exact
+            path="/"
+            render={() =>
+              loggedEmail && loggedPassword ? (
+                <Redirect to="/home" />
+              ) : (
+                <Login />
+              )
+            }
+          />
           <Route exact path="/register" component={RegisterUser} />
           <Route exact path="/discover" component={auth(Discover)} />
           <Route exact path="/follow" component={auth(Follow)} />
           <Route exact path="/home" component={auth(PostsFeed)} />
+          <Route exact path="/post/:id" component={auth(Post)} />
           <Route exact path="/profile" component={auth(Profile)} />
           <Route exact path="/profile/settings" component={auth(Settings)} />
           <Route exact path="/profile/settings/name" component={auth(Name)} />

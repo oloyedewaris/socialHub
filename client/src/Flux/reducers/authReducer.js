@@ -1,5 +1,4 @@
 import {
-  AUTH_ERROR,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
@@ -11,7 +10,6 @@ import {
   REMOVE_FOLLOWING,
   CHANGE_SETTINGS
 } from "../actions/types";
-// import history from "../../Utils/history";
 import { createBrowserHistory } from "history";
 
 const initialState = {
@@ -25,18 +23,17 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        token: localStorage.getItem("token"),
+        token: action.payload.token,
         isLoading: false,
         isAuthenticated: true,
         user: action.payload.user
       };
-    case AUTH_ERROR:
     case LOGIN_FAILED:
     case REGISTER_FAILED:
-      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
       return {
         ...state,
         token: null,
@@ -45,7 +42,8 @@ export default function(state = initialState, action) {
         isAuthenticated: false
       };
     case LOGOUT_SUCCESS:
-      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
       return {
         ...state,
         token: null,

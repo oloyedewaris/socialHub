@@ -20,7 +20,7 @@ const LoginUser = () => {
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      setRedirect("home");
+      setRedirect(true);
     } else {
       setRedirect(null);
     }
@@ -29,7 +29,7 @@ const LoginUser = () => {
 
   useEffect(() => {
     if (redirect) {
-      setRedirect("home");
+      setRedirect(true);
     } else {
       setEmail("");
       setPassword("");
@@ -61,6 +61,8 @@ const LoginUser = () => {
       email,
       password
     };
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
     dispatch(login(newUser));
   };
 
