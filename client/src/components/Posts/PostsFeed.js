@@ -15,7 +15,7 @@ import {
   getPosts,
   updatePostLikes,
   deletePost
-} from "../../Flux/actions/postActions";
+} from "../../redux/actions/postActions";
 import Post from "./Post";
 import CreatePosts from "../CreatePosts/CreatePosts";
 import Wrapper from "../../hoc/navWrapper";

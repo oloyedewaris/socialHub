@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, Space, Alert } from "antd";
 import { useDispatch } from "react-redux";
-import { addComment } from "../../Flux/actions/postActions";
+import { addComment } from "../../redux/actions/postActions";
 
 const { Search } = Input;
 const CommentInput = ({ postData }) => {

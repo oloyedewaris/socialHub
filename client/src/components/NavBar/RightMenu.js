@@ -2,7 +2,7 @@ import React from "react";
 import { Menu } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../../Flux/actions/authActions";
+import { logout } from "../../redux/actions/authActions";
 
 const RightMenu = ({ mode, onClose }) => {
   const isAuth = useSelector(state => state.auth.isAuthenticated);

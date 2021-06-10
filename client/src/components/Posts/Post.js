@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { List, Button, Avatar, Spin } from "antd";
 import Wrapper from "../../hoc/navWrapper";
 import { LikeOutlined, CommentOutlined, LikeFilled } from "@ant-design/icons";
-import { updatePostLikes, getPosts } from "../../Flux/actions/postActions";
+import { updatePostLikes, getPosts } from "../../redux/actions/postActions";
 import Comments from "./Comments";
 import CommentInput from "./CommentInput";
 

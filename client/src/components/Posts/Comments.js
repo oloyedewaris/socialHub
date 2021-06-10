@@ -2,7 +2,7 @@ import React from "react";
 import { Comment, List, Popconfirm, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteTwoTone } from "@ant-design/icons";
-import { deleteComment } from "../../Flux/actions/postActions";
+import { deleteComment } from "../../redux/actions/postActions";
 
 const Comments = ({ post }) => {
   const dispatch = useDispatch();

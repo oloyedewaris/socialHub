@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Spin } from "antd";
-import { login } from "../Flux/actions/authActions";
+import { login } from "../redux/actions/authActions";
 import Login from "../screen/Login";
 
 function Auth(Component) {

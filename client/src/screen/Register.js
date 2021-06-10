@@ -3,7 +3,7 @@ import { Button, Form, Input } from "antd";
 import { Alert } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../Flux/actions/authActions";
+import { register } from "../redux/actions/authActions";
 
 const RegisterUser = () => {
   const [firstName, setFirstName] = useState("");

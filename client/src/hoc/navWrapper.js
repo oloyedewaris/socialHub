@@ -12,7 +12,7 @@ import {
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../Flux/actions/authActions";
+import { logout } from "../redux/actions/authActions";
 
 const { Header, Content, Sider } = Layout;
 

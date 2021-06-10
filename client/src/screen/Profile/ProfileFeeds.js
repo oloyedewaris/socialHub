@@ -14,7 +14,7 @@ import {
   getPosts,
   updatePostLikes,
   deletePost
-} from "../../Flux/actions/postActions";
+} from "../../redux/actions/postActions";
 
 const ProfileFeeds = () => {
   useEffect(() => {

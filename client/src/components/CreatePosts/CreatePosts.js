@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Input } from "antd";
 import Loader from "react-loader-spinner";
-import { createPost } from "../../Flux/actions/postActions";
+import { createPost } from "../../redux/actions/postActions";
 
 function CreatePosts() {
   const dispatch = useDispatch();

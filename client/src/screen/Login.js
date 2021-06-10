@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Alert } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../Flux/actions/authActions";
+import { login } from "../redux/actions/authActions";
 
 const LoginUser = () => {
   const [email, setEmail] = useState("");

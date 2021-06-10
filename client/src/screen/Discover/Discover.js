@@ -7,7 +7,7 @@ import {
   addFollowing,
   removeFollower,
   removeFollowing
-} from "../../Flux/actions/usersActions";
+} from "../../redux/actions/usersActions";
 import Wrapper from "../../hoc/navWrapper";
 
 const Discover = () => {

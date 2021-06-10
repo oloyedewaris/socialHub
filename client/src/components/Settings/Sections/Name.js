@@ -3,7 +3,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Input, Button, Alert } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { changeSettings } from "../../../Flux/actions/authActions";
+import { changeSettings } from "../../../redux/actions/authActions";
 import Wrapper from "../../../hoc/navWrapper";
 
 function Name() {
