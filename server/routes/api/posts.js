@@ -14,11 +14,6 @@ const router = express.Router();
 //@access --private
 router.post("/", auth, postsController.createPost);
 
-//@route --post api/posts
-//@dscription --get a post by its id
-//@access --private
-router.get("/:id", auth, postsController.getPostById);
-
 //@route-- delete api/posts/:id
 //@description --Delete an Existing Post
 //@access --private
