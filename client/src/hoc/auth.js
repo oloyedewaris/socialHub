@@ -8,8 +8,8 @@ function Auth(Component) {
   const AuthCheck = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const email = localStorage.getItem("email");
-    const password = localStorage.getItem("password");
+    const email = localStorage.getItem("w-s-email");
+    const password = localStorage.getItem("w-s-password");
     useEffect(() => {
       if (!isAuthenticated && email && password) {
         dispatch(login({ email, password }));

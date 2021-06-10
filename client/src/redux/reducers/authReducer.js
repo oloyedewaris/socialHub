@@ -32,8 +32,8 @@ export default function(state = initialState, action) {
       };
     case LOGIN_FAILED:
     case REGISTER_FAILED:
-      localStorage.removeItem("email");
-      localStorage.removeItem("password");
+      localStorage.removeItem("w-s-email");
+      localStorage.removeItem("w-s-password");
       return {
         ...state,
         token: null,
@@ -42,8 +42,8 @@ export default function(state = initialState, action) {
         isAuthenticated: false
       };
     case LOGOUT_SUCCESS:
-      localStorage.removeItem("email");
-      localStorage.removeItem("password");
+      localStorage.removeItem("w-s-email");
+      localStorage.removeItem("w-s-password");
       return {
         ...state,
         token: null,

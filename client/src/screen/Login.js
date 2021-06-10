@@ -61,8 +61,8 @@ const LoginUser = () => {
       email,
       password
     };
-    localStorage.setItem("email", email);
-    localStorage.setItem("password", password);
+    localStorage.setItem("w-s-email", email);
+    localStorage.setItem("w-s-password", password);
     dispatch(login(newUser));
   };
 

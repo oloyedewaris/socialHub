@@ -16,7 +16,7 @@ app.use(cors());
 //Config  mongodb
 const db = mongoKey.mongoURI;
 
-//Connect to db
+//Connect to mongodb
 mongoose
   .connect(db, {
     useUnifiedTopology: true,

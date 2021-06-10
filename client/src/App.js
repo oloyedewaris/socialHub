@@ -19,8 +19,8 @@ import Bio from "./components/Settings/Sections/Bio";
 import PostsFeed from "./components/Posts/PostsFeed";
 import Post from "./components/Posts/Post";
 
-const loggedEmail = localStorage.getItem("email");
-const loggedPassword = localStorage.getItem("password");
+const loggedEmail = localStorage.getItem("w-s-email");
+const loggedPassword = localStorage.getItem("w-s-password");
 
 const App = () => {
   return (
