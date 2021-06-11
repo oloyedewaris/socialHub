@@ -10,6 +10,8 @@ const Post = require("../models/Post");
 
 exports.getAllUsers = (req, res) => {
   return User.find()
+    .populate("followersId")
+    .populate("followingId")
     .select("-password")
     .sort({ timestamp: -1 })
     .then(users => {
