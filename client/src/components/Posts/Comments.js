@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Comment, List, Popconfirm, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteTwoTone } from "@ant-design/icons";
@@ -7,10 +7,17 @@ import { deleteComment } from "../../redux/actions/postActions";
 const Comments = ({ post }) => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
+  const commentDeleted = useSelector(state => state.post.commentDeleted);
+
+
+  useEffect(() => {
+    if (commentDeleted) {
+      message.info("Comment deleted");
+    }
+  }, [commentDeleted]);
 
   const onDeleteComment = (postId, commentId, action) => {
     dispatch(deleteComment(postId, commentId, action));
-    // message("Comment deleted");
   };
 
   return (

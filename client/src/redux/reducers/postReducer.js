@@ -18,6 +18,7 @@ const initialState = {
   postLoaded: false,
   postCreating: false,
   postCreated: false,
+  postDeleted: false,
   posts: null,
 };
 
@@ -28,6 +29,8 @@ export default function (state = initialState, action) {
         ...state,
         postLoading: true,
         postLoaded: false,
+        commentDeleted: false,
+        postDeleted: false,
       };
     case GET_POSTS:
       return {
@@ -47,6 +50,8 @@ export default function (state = initialState, action) {
         ...state,
         postCreating: true,
         postCreated: false,
+        commentDeleted: false,
+        postDeleted: false,
       };
     case CREATE_POST:
       return {
@@ -65,6 +70,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         updatingPostLike: true,
+        commentDeleted: false,
+        postDeleted: false,
       };
     case UPDATE_POST_LIKES:
       return {
@@ -76,16 +83,20 @@ export default function (state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+        commentDeleted: false,
+        postDeleted: false,
       };
     case DELETE_COMMENT:
       return {
         ...state,
         posts: action.payload,
+        commentDeleted: true
       };
     case DELETE_POST:
       return {
         ...state,
         posts: action.payload,
+        postDeleted: true
       };
     default:
       return state;

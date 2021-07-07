@@ -9,18 +9,23 @@ const Post = require("../models/Post");
 // // Users Controllers // //
 
 exports.getAllUsers = (req, res) => {
-  return User.find()
-    .populate("followersId")
-    .populate("followingId")
-    .select("-password")
-    .sort({ timestamp: -1 })
-    .then(users => {
-      const filteredUsers = users.filter(
-        user => req.user._id.toString() !== user._id.toString()
-      );
-      return res.status(200).json(filteredUsers);
-    })
-    .catch(err => res.json(err).status(400));
+  try {
+    return User.find()
+      .populate("followersId")
+      .populate("followingId")
+      .select("-password")
+      .sort({ timestamp: -1 })
+      .then(users => {
+        const filteredUsers = users.filter(
+          user => req.user._id.toString() !== user._id.toString()
+        );
+        return res.status(200).json(filteredUsers);
+      })
+      .catch(err => res.json(err).status(400));
+  } catch (err) {
+    console.log({ message: "Failed", error: err })
+    return res.status(500).json("Internal server error");
+  }
 };
 
 // exports.findUserById = (req, res) => {
@@ -72,8 +77,9 @@ exports.followings = (req, res) => {
           .catch(err => res.json(err).status(400));
       }
     );
-  } catch (e) {
-    return res.status(500).json(e);
+  } catch (err) {
+    console.log({ message: "Failed", error: err })
+    return res.status(500).json("Internal server error");
   }
 };
 
@@ -117,8 +123,9 @@ exports.unfollowings = (req, res) => {
           .catch(err => res.json(err).status(400));
       }
     );
-  } catch (e) {
-    return res.status(500).json(e);
+  } catch (err) {
+    console.log({ message: "Failed", error: err })
+    return res.status(500).json("Internal server error");
   }
 };
 
@@ -162,8 +169,9 @@ exports.followers = (req, res) => {
           .catch(err => res.json(err).status(400));
       }
     );
-  } catch (e) {
-    return res.status(500).json(e);
+  } catch (err) {
+    console.log({ message: "Failed", error: err })
+    return res.status(500).json("Internal server error");
   }
 };
 
@@ -207,8 +215,9 @@ exports.unfollowers = (req, res) => {
           .catch(err => res.json(err).status(400));
       }
     );
-  } catch (e) {
-    return res.status(500).json(e);
+  } catch (err) {
+    console.log({ message: "Failed", error: err })
+    return res.status(500).json("Internal server error");
   }
 };
 
@@ -353,6 +362,7 @@ exports.settings = (req, res) => {
       });
     }
   } catch (err) {
-    return res.status(500).json({ message: err });
+    console.log({ message: "Failed", error: err })
+    return res.status(500).json("Internal server error");
   }
 };

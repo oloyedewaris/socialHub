@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, List, Avatar, Skeleton, Popconfirm, message } from "antd";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
@@ -29,14 +29,21 @@ const PostsFeed = () => {
   const posts = useSelector(state => state.post.posts);
   const postLoading = useSelector(state => state.post.postLoading);
   const updatingPostLike = useSelector(state => state.post.updatingPostLike);
+  const postDeleted = useSelector(state => state.post.postDeleted);
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    if (postDeleted) {
+      message.info("Post deleted");
+    }
+  }, [postDeleted]);
 
   const onDeletePost = postId => {
     dispatch(deletePost(postId));
-    message.info("Post deleted");
+
   };
 
   const onLikeClick = ({ postId, userId }) => {

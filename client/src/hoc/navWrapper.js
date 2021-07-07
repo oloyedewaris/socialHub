@@ -69,7 +69,7 @@ const Wrapper = props => {
             deviceWidth > 767 ? "80" : deviceWidth > 450 ? "70" : "40"
           }
           width={deviceWidth > 767 ? "200" : deviceWidth > 450 ? "160" : "120"}
-          collapsed={collapse}
+          collapsed={deviceWidth > 767 ? !collapse : collapse}
         >
           <Avatar className="nav-logo">{firstLetter}</Avatar>
           <Menu theme="dark" selectedKeys={[current]} mode="inline">

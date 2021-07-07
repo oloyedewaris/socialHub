@@ -11,16 +11,18 @@ import {
 
 const initialState = {
   updatingFollow: false,
+  followed: false,
   allUsersLoading: false,
   allUsers: []
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case GETTING_ALL_USERS:
       return {
         ...state,
-        allUsersLoading: true
+        allUsersLoading: true,
+        followed: false,
       };
     case GET_ALL_USERS:
       return {
@@ -40,7 +42,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         allUsers: action.payload.users,
-        updatingFollow: false
+        updatingFollow: false,
+        followed: true,
       };
     case UPDATING_FOLLOW:
       return {

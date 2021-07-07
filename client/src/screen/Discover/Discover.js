@@ -17,11 +17,18 @@ const Discover = () => {
   const allUsers = useSelector(state => state.users.allUsers);
   const authUser = useSelector(state => state.auth.user);
   const allUsersLoading = useSelector(state => state.users.allUsersLoading);
+  const followed = useSelector(state => state.users.followed);
 
   useEffect(() => {
     dispatch(getAllUsers());
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (followed) {
+      openNotification("topLeft");
+    }
+  }, [followed]);
 
   const onAddFollowing = ({ userId, followingId }) => {
     dispatch(addFollowing({ userId, followingId }));
@@ -39,18 +46,10 @@ const Discover = () => {
     dispatch(removeFollower({ userId, unfollowerId }));
   };
 
-  const openFollowNotification = (placement, person) => {
+  const openNotification = (placement) => {
     notification.success({
       message: "Follow Notification",
-      description: `You just followed ${person}`,
-      placement
-    });
-  };
-
-  const openUnfollowNotification = (placement, person) => {
-    notification.success({
-      message: "Unfollow Notification",
-      description: `You just unfollowed ${person}`,
+      description: `Follows updated`,
       placement
     });
   };
@@ -97,7 +96,6 @@ const Discover = () => {
                           userId: authUser._id,
                           unfollowingId: user._id
                         });
-                        openUnfollowNotification("topLeft", user.firstName);
                       }}
                     >
                       UnFollow
@@ -116,7 +114,6 @@ const Discover = () => {
                           userId: authUser._id,
                           followingId: user._id
                         });
-                        openFollowNotification("topLeft", user.firstName);
                       }}
                     >
                       Follow
