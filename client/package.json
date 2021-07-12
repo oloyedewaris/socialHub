@@ -1,7 +1,7 @@
 {
-  "name": "social-space",
+  "name": "SocialHub",
   "version": "1.0.0",
-  "description": "a social app",
+  "description": "a social application",
   "private": true,
   "scripts": {
     "start": "react-scripts start",

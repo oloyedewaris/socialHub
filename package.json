@@ -1,5 +1,5 @@
 {
-  "name": "waris-social-app",
+  "name": "SocialHub",
   "version": "1.0.0",
   "description": "Social application built with the mern stack",
   "main": "server.js",
