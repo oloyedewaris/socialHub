@@ -1,25 +1,25 @@
 .menuBar {
-  height: auto;
   padding: 0 20px;
   border-bottom: solid 1px #e8e8e8;
   overflow: auto;
   box-shadow: 0 0 30px #f3f1f1;
+  margin: auto;
 }
 
 .logo {
-  width: 150px;
+  width: 100px;
+  margin: auto;
   float: left;
 }
 
-.logo a {
+.logo_img {
   display: inline-block;
-  font-size: 20px;
-  padding: 19px 20px;
-  text-transform: capitalize;
+  padding: 5px;
+  height: 55px
 }
 
 .menuCon {
-  width: calc(100% - 150px);
+  width: calc(100% - 100px);
   float: left;
 }
 
@@ -33,7 +33,7 @@
 
 .menuCon .ant-menu-item a,
 .menuCon .ant-menu-submenu-title a {
-  padding: 10px 15px;
+  padding: 0.5px 1px;
 }
 
 .menuCon .ant-menu-horizontal {
@@ -48,22 +48,9 @@
   float: right;
 }
 
-.barsMenu {
-  float: right;
-  height: 32px;
-  padding: 6px;
-  margin-top: 8px;
-  display: none !important;
-  background: none;
-}
-
-.barsBtn {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background: #1890ff;
-  position: relative;
-}
+.mobile_bar {
+    display: none;
+  }
 
 .barsBtn:after,
 .barsBtn:before {
@@ -85,8 +72,8 @@
   padding: 0;
 }
 
-.barsMenu > span {
-  display: block;
+.nav-email {
+  color: black;
 }
 
 .ant-drawer-body .ant-menu-horizontal > .ant-menu-item,
@@ -104,25 +91,13 @@
 }
 
 @media (max-width: 767px) {
-  .barsMenu {
-    display: inline-block !important;
+  .mobile_bar {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
   }
-
-  .leftMenu,
-  .rightMenu {
+  .menuBar {
     display: none;
-  }
-
-  .logo a {
-    margin-left: -20px;
-  }
-
-  .menuCon .ant-menu-item,
-  .menuCon .ant-menu-submenu-title {
-    padding: 1px 20px;
-  }
-
-  .logo a {
-    padding: 10px 20px;
   }
 }

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Tabs, Card } from "antd";
-import Wrapper from "../../hoc/navWrapper";
 
 const Follow = () => {
   const authUser = useSelector(state => state.auth.user);
@@ -13,44 +12,42 @@ const Follow = () => {
   }, [authUser._id]);
 
   return (
-    <Wrapper>
-      <Tabs className="tabs">
-        <TabPane tab="Followers" key="1">
-          {authUser.followersId ? (
-            authUser.followersId.length === 0 ? (
-              <div>
-                <p size="small" className="center">
-                  No Followers Yet
-                </p>
-              </div>
-            ) : (
-              authUser.followersId.map((user, i) => {
-                return (
-                  <Card size="small" className="center" key={i}>
-                    {`${user.firstName} ${user.lastName}`}
-                  </Card>
-                );
-              })
-            )
-          ) : null}
-        </TabPane>
-        <TabPane tab="Followings" key="2">
-          {authUser.followingId ? (
-            authUser.followingId.length === 0 ? (
-              <p className="center">No Following Yet</p>
-            ) : (
-              authUser.followingId.map((user, i) => {
-                return (
-                  <Card size="small" key={i} className="center">
-                    {`${user.firstName} ${user.lastName}`}
-                  </Card>
-                );
-              })
-            )
-          ) : null}
-        </TabPane>
-      </Tabs>
-    </Wrapper>
+    <Tabs className="tabs">
+      <TabPane tab="Followers" key="1">
+        {authUser.followersId ? (
+          authUser.followersId.length === 0 ? (
+            <div>
+              <p size="small" className="center">
+                No Followers Yet
+              </p>
+            </div>
+          ) : (
+            authUser.followersId.map((user, i) => {
+              return (
+                <Card size="small" className="center" key={i}>
+                  {`${user.firstName} ${user.lastName}`}
+                </Card>
+              );
+            })
+          )
+        ) : null}
+      </TabPane>
+      <TabPane tab="Followings" key="2">
+        {authUser.followingId ? (
+          authUser.followingId.length === 0 ? (
+            <p className="center">No Following Yet</p>
+          ) : (
+            authUser.followingId.map((user, i) => {
+              return (
+                <Card size="small" key={i} className="center">
+                  {`${user.firstName} ${user.lastName}`}
+                </Card>
+              );
+            })
+          )
+        ) : null}
+      </TabPane>
+    </Tabs>
   );
 };
 

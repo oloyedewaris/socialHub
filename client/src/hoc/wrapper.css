@@ -1,0 +1,29 @@
+/* changing component based on screen size */
+@media screen and (min-width: 768px) { 
+   .small_comp_con {
+     display: none;
+   }
+}
+@media screen and (max-width: 767px) { 
+  .large_comp_con {
+    display: none;
+  }
+  .small_comp_con {
+      padding: 0 3rem;
+  }
+  @media screen and (max-width: 650px) {
+    .small_comp_con {
+      padding: 0 2rem;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .small_comp_con {
+      padding: 0 1rem;
+    }
+  }
+  @media screen and (max-width: 350px) {
+    .small_comp_con {
+      padding: 0 0.2rem;
+    }
+  }
+}

@@ -38,11 +38,14 @@ router.patch("/followers/:id", auth, usersController.followers);
 //@access --private
 router.patch("/unfollowers/:id", auth, usersController.unfollowers);
 
-//Changing of user data routes
+//@route post --api/users/new_users
+//@description --change user data
+//@access --private
+router.get("/new_users", auth, usersController.newUsers);
 
 //@route post --api/users/settings:id
 //@description --change user data
-//@access --public
+//@access --private
 router.post("/settings/:id", auth, usersController.settings);
 
 module.exports = router;

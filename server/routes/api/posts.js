@@ -31,7 +31,7 @@ router.get("/", auth, (req, res) => {
     .sort({ timestamp: -1 })
     .exec()
     .then(posts => res.status(200).json(posts))
-    .catch(err => res.json(err).status(400));
+    .catch(err => res.status(400).json(err));
 });
 
 module.exports = router;

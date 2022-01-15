@@ -3,8 +3,7 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { List, Button, Avatar, Spin } from "antd";
-import Wrapper from "../../hoc/navWrapper";
+import { List, Button, Avatar, Spin, Space } from "antd";
 import { LikeOutlined, CommentOutlined, LikeFilled } from "@ant-design/icons";
 import { updatePostLikes, getPosts } from "../../redux/actions/postActions";
 import Comments from "./Comments";
@@ -36,16 +35,21 @@ const Post = props => {
     }
   }, [posts]);
 
-  const onLikeClick = (postId, userId) => {
+  const onLikeClick = (postId, userId) =>
     dispatch(updatePostLikes(postId, "like", userId));
-  };
 
-  const onUnlikeClick = (postId, userId) => {
+  const onUnlikeClick = (postId, userId) =>
     dispatch(updatePostLikes(postId, "unlike", userId));
-  };
+
+  const IconText = ({ icon, text, ...props }) => (
+    <Space {...props}>
+      {React.createElement(icon)}
+      {text}
+    </Space>
+  )
 
   return (
-    <Wrapper>
+    <div>
       {post ? (
         <div className="posts-comment">
           <List
@@ -53,38 +57,23 @@ const Post = props => {
             renderItem={() => (
               <List.Item
                 actions={[
-                  !post.likers.includes(auth.user._id) ? (
-                    <Button
-                      disabled={updatingPostLike}
-                      onClick={() => {
-                        onLikeClick(post._id, auth.user._id);
-                      }}
-                    >
-                      {`${post.likers.length} `}
-                      <LikeOutlined />
-                    </Button>
-                  ) : (
-                    <Button
-                      disabled={updatingPostLike}
-                      onClick={() => {
-                        onUnlikeClick(post._id, auth.user._id);
-                      }}
-                    >
-                      {`${post.likers.length} `}
-                      <LikeFilled />
-                    </Button>
-                  ),
-                  <Button>
-                    {`${post.comments.length} `}
-                    <CommentOutlined />
-                  </Button>
+                  <IconText
+                    disabled={updatingPostLike}
+                    onClick={() => !post.likers.includes(auth.user._id) ?
+                      onLikeClick(post._id, auth.user._id) :
+                      onUnlikeClick(post._id, auth.user._id)}
+                    text={`${post.likers.length} `}
+                    icon={!post.likers.includes(auth.user._id) ? LikeOutlined : LikeFilled}
+                  />,
+                  <IconText
+                    text={`${post.comments.length} `}
+                    icon={CommentOutlined}
+                  />
                 ]}
               >
                 <List.Item.Meta
                   avatar={
-                    <Avatar
-                      style={{ backgroundColor: post.author.avatarColor }}
-                    >
+                    <Avatar style={{ backgroundColor: post.author.avatarColor }}>
                       {post.author.firstName[0]}
                     </Avatar>
                   }
@@ -98,19 +87,14 @@ const Post = props => {
           <div>
             <Comments post={post} />
           </div>
-          <CommentInput
-            postData={{
-              commentId: post._id,
-              userId: auth.user._id
-            }}
-          />
+          <CommentInput postData={{ commentId: post._id, userId: auth.user._id }} />
         </div>
       ) : (
         <div className="loader">
           <Spin size="large" />
         </div>
       )}
-    </Wrapper>
+    </div>
   );
 };
 

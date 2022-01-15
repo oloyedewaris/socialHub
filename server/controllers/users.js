@@ -10,7 +10,7 @@ const Post = require("../models/Post");
 
 exports.getAllUsers = (req, res) => {
   try {
-    return User.find()
+    User.find()
       .populate("followersId")
       .populate("followingId")
       .select("-password")
@@ -21,7 +21,7 @@ exports.getAllUsers = (req, res) => {
         );
         return res.status(200).json(filteredUsers);
       })
-      .catch(err => res.json(err).status(400));
+      .catch(err => res.status(400).json(err));
   } catch (err) {
     console.log({ message: "Failed", error: err })
     return res.status(500).json("Internal server error");
@@ -74,7 +74,7 @@ exports.followings = (req, res) => {
               .status(200)
               .json({ users: filteredUsers, user: currUser });
           })
-          .catch(err => res.json(err).status(400));
+          .catch(err => res.status(400).json(err));
       }
     );
   } catch (err) {
@@ -120,7 +120,7 @@ exports.unfollowings = (req, res) => {
               .status(200)
               .json({ users: filteredUsers, user: currUser });
           })
-          .catch(err => res.json(err).status(400));
+          .catch(err => res.status(400).json(err));
       }
     );
   } catch (err) {
@@ -166,7 +166,7 @@ exports.followers = (req, res) => {
               .status(200)
               .json({ users: filteredUsers, user: currUser });
           })
-          .catch(err => res.json(err).status(400));
+          .catch(err => res.status(400).json(err));
       }
     );
   } catch (err) {
@@ -212,7 +212,7 @@ exports.unfollowers = (req, res) => {
               .status(200)
               .json({ users: filteredUsers, user: currUser });
           })
-          .catch(err => res.json(err).status(400));
+          .catch(err => res.status(400).json(err));
       }
     );
   } catch (err) {
@@ -220,6 +220,22 @@ exports.unfollowers = (req, res) => {
     return res.status(500).json("Internal server error");
   }
 };
+
+exports.newUsers = (req, res) => {
+  User.find()
+    .limit(3)
+    .populate("followersId")
+    .populate("followingId")
+    .select("-password")
+    .sort({ timestamp: -1 })
+    .then(users => {
+      const filteredUsers = users.filter(
+        user => req.user._id.toString() !== user._id.toString()
+      );
+      return res.status(200).json(filteredUsers);
+    })
+    .catch(err => res.status(400).json(err));
+}
 
 exports.settings = (req, res) => {
   const userId = req.params.id;

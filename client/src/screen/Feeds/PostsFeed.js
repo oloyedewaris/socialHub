@@ -1,24 +1,13 @@
 import React, { useEffect } from "react";
-import { Button, List, Avatar, Skeleton, Popconfirm, message } from "antd";
+import { List, Avatar, Skeleton, Popconfirm, message, Space, Divider } from "antd";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
-import {
-  LikeOutlined,
-  LikeFilled,
-  CommentOutlined,
-  DeleteTwoTone
-} from "@ant-design/icons";
-import {
-  getPosts,
-  updatePostLikes,
-  deletePost
-} from "../../redux/actions/postActions";
-import Post from "./Post";
+import { LikeOutlined, LikeFilled, CommentOutlined, DeleteTwoTone } from "@ant-design/icons";
+import { getPosts, updatePostLikes, deletePost } from "../../redux/actions/postActions";
+import Post from "../Posts/Post";
 import CreatePosts from "../CreatePosts/CreatePosts";
-import Wrapper from "../../hoc/navWrapper";
 
 const PostsFeed = () => {
   TimeAgo.addLocale(en);
@@ -41,28 +30,32 @@ const PostsFeed = () => {
     }
   }, [postDeleted]);
 
-  const onDeletePost = postId => {
+  const onDeletePost = postId =>
     dispatch(deletePost(postId));
 
-  };
-
-  const onLikeClick = ({ postId, userId }) => {
+  const onLikeClick = ({ postId, userId }) =>
     dispatch(updatePostLikes(postId, "like", userId));
-  };
 
-  const onUnlikeClick = ({ postId, userId }) => {
+
+  const onUnlikeClick = ({ postId, userId }) =>
     dispatch(updatePostLikes(postId, "unlike", userId));
-  };
+
+  const IconText = ({ icon, text, ...props }) => (
+    <Space {...props}>
+      {React.createElement(icon)}
+      {text}
+    </Space>
+  )
 
   return (
     <div>
-      <Wrapper>
+      <div>
         <CreatePosts />
         {postLoading ? (
           <Skeleton active paragraph={{ row: 5 }} />
         ) : (
           <div className="posts-list">
-            <h3>Feeds</h3>
+            <Divider orientation="left">Feeds</Divider>
             {posts ? (
               posts.length === 0 ? (
                 <h3>No post to show, make a post to appear here</h3>
@@ -70,55 +63,25 @@ const PostsFeed = () => {
                 <List
                   itemLayout="vertical"
                   size="large"
-                  pagination={{
-                    pageSize: 8
-                  }}
+                  pagination={{ pageSize: 5 }}
                   dataSource={posts}
-                  footer={
-                    <div>
-                      <b>Next page</b>
-                    </div>
-                  }
                   renderItem={(post, i) => {
                     return (
                       <List.Item
                         key={i}
                         actions={[
-                          <div>
-                            {!post.likers.includes(auth.user._id) ? (
-                              <Button
-                                disabled={updatingPostLike}
-                                onClick={() => {
-                                  onLikeClick({
-                                    postId: post._id,
-                                    userId: auth.user._id
-                                  });
-                                }}
-                              >
-                                {`${post.likers.length} `}
-                                <LikeOutlined />
-                              </Button>
-                            ) : (
-                              <Button
-                                disabled={updatingPostLike}
-                                onClick={() => {
-                                  onUnlikeClick({
-                                    postId: post._id,
-                                    userId: auth.user._id
-                                  });
-                                }}
-                              >
-                                {`${post.likers.length} `}
-                                <LikeFilled />
-                              </Button>
-                            )}
-                          </div>,
-                          <Button>
-                            <Link to={`/post/${post._id}`}>
-                              {`${post.comments.length} `}
-                              <CommentOutlined />
-                            </Link>
-                          </Button>
+                          <IconText
+                            disabled={updatingPostLike}
+                            onClick={() => !post.likers.includes(auth.user._id) ?
+                              onLikeClick({ postId: post._id, userId: auth.user._id }) :
+                              onUnlikeClick({ postId: post._id, userId: auth.user._id })}
+                            text={`${post.likers.length} `}
+                            icon={!post.likers.includes(auth.user._id) ? LikeOutlined : LikeFilled}
+                          />,
+                          <Link to={`/post/${post._id}`}>
+                            {`${post.comments.length} `}
+                            <CommentOutlined />
+                          </Link>
                         ]}
                         extra={
                           auth.user._id === posts[i].author._id ? (
@@ -136,17 +99,13 @@ const PostsFeed = () => {
                       >
                         <List.Item.Meta
                           avatar={
-                            <Avatar
-                              style={{
-                                backgroundColor: post.author.avatarColor
-                              }}
-                            >
+                            <Avatar style={{ backgroundColor: post.author.avatarColor }}>
                               {post.author.firstName[0]}
                             </Avatar>
                           }
                           title={`${post.author.firstName} ${post.author.lastName}`}
                           description={timeAgo.format(post.postedTime)}
-                        ></List.Item.Meta>
+                        />
                         {post.text}
                       </List.Item>
                     );
@@ -156,7 +115,7 @@ const PostsFeed = () => {
             ) : null}
           </div>
         )}
-      </Wrapper>
+      </div>
     </div>
   );
 };

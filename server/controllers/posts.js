@@ -16,13 +16,13 @@ exports.createPost = (req, res) => {
     });
     newPost
       .save()
-      .then(post => {
+      .then(() => {
         Post.find()
           .populate("author")
           .populate("comments.commenter")
           .sort({ timestamp: -1 })
           .then(posts => res.status(200).json(posts))
-          .catch(err => res.json(err).status(400));
+          .catch(err => res.status(400).json(err));
       })
       .catch(err => res.status(400).send(err));
   } catch (err) {
@@ -42,7 +42,7 @@ exports.deletePost = (req, res) => {
           .populate("comments.commenter")
           .sort({ timestamp: -1 })
           .then(posts => res.status(200).json(posts))
-          .catch(err => res.json(err).status(400));
+          .catch(err => res.status(400).json(err));
       }
     );
   } catch (err) {
@@ -72,7 +72,7 @@ exports.updatePost = (req, res) => {
             .populate("comments.commenter")
             .sort({ timestamp: -1 })
             .then(posts => res.status(200).json(posts))
-            .catch(err => res.json(err).status(400));
+            .catch(err => res.status(400).json(err));
         }
       );
     } catch (err) {
@@ -99,7 +99,7 @@ exports.updatePost = (req, res) => {
             .populate("comments.commenter")
             .sort({ timestamp: -1 })
             .then(posts => res.status(200).json(posts))
-            .catch(err => res.json(err).status(400));
+            .catch(err => res.status(400).json(err));
         }
       );
     } catch (err) {
@@ -130,7 +130,7 @@ exports.updatePost = (req, res) => {
             .populate("comments.commenter")
             .sort({ timestamp: -1 })
             .then(posts => res.status(200).json(posts))
-            .catch(err => res.json(err).status(400));
+            .catch(err => res.status(400).json(err));
         }
       );
     } catch (err) {
@@ -159,7 +159,7 @@ exports.updatePost = (req, res) => {
             .populate("comments.commenter")
             .sort({ timestamp: -1 })
             .then(posts => res.status(200).json(posts))
-            .catch(err => res.json(err).status(400));
+            .catch(err => res.status(400).json(err));
         }
       );
     } catch (err) {

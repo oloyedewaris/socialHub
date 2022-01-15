@@ -11,13 +11,10 @@ import Contact from "./components/Details/Contact";
 import About from "./components/Details/About";
 import Navbar from "./components/NavBar/Navbar";
 import Whoops404 from "./Utils/Whoops404";
-import Settings from "./components/Settings/Settings";
-import Name from "./components/Settings/Sections/Name";
-import Email from "./components/Settings/Sections/Email";
-import Password from "./components/Settings/Sections/Password";
-import Bio from "./components/Settings/Sections/Bio";
-import PostsFeed from "./components/Posts/PostsFeed";
-import Post from "./components/Posts/Post";
+import Settings from "./screen/Settings/Settings";
+import PostsFeed from "./screen/Posts/PostsFeed";
+import Post from "./screen/Posts/Post";
+import LS from "./hoc/navWrapper";
 
 const loggedEmail = localStorage.getItem("w-s-email");
 const loggedPassword = localStorage.getItem("w-s-password");
@@ -26,44 +23,19 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <div>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() =>
-              loggedEmail && loggedPassword ? (
-                <Redirect to="/home" />
-              ) : (
-                <Login />
-              )
-            }
-          />
-          <Route exact path="/register" component={RegisterUser} />
-          <Route exact path="/discover" component={auth(Discover)} />
-          <Route exact path="/follow" component={auth(Follow)} />
-          <Route exact path="/home" component={auth(PostsFeed)} />
-          <Route exact path="/post/:id" component={auth(Post)} />
-          <Route exact path="/profile" component={auth(Profile)} />
-          <Route exact path="/profile/settings" component={auth(Settings)} />
-          <Route exact path="/profile/settings/name" component={auth(Name)} />
-          <Route exact path="/profile/settings/email" component={auth(Email)} />
-          <Route exact path="/profile/settings/bio" component={auth(Bio)} />
-          <Route
-            exact
-            path="/profile/settings/password"
-            component={auth(Password)}
-          />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/about" component={About} />
-          <Route component={Whoops404} />
-          <Route
-            exact
-            path="/profile/settings/password"
-            component={auth(Password)}
-          />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" render={() => loggedEmail && loggedPassword ? <Redirect to="/home" /> : <Login />} />
+        <Route exact path="/register" component={RegisterUser} />
+        <Route exact path="/discover" component={auth(LS(Discover))} />
+        <Route exact path="/follow" component={auth(LS(Follow))} />
+        <Route exact path="/home" component={auth(LS(PostsFeed))} />
+        <Route exact path="/post/:id" component={auth(LS(Post))} />
+        <Route exact path="/profile" component={auth(LS(Profile))} />
+        <Route exact path="/settings" component={auth(LS(Settings))} />
+        <Route exact path="/contact" component={Contact} />
+        <Route exact path="/about" component={About} />
+        <Route component={Whoops404} />
+      </Switch>
       <div className="footer">
         <Footer />
       </div>

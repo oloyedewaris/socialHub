@@ -1,48 +1,29 @@
 import React, { useState } from "react";
-import LeftMenu from "./LeftMenu";
-import RightMenu from "./RightMenu";
-import { Drawer, Button } from "antd";
-import { MenuFoldOutlined } from "@ant-design/icons";
+import LeftMenu from "./Menu/LeftMenu";
+import RightMenu from "./Menu/RightMenu";
+import MobileMenu from "./Menu/MobileMenu"
 import "./navbar.css";
 
 const Navbar = () => {
-  const [visible, setvisible] = useState(false);
-
-  const showDrawer = () => {
-    setvisible(true);
-  };
-
-  const onClose = () => {
-    setvisible(false);
-  };
-
   return (
-    <nav className="menuBar">
-      <div className="logo">
-        <a href="/">SocialHub</a>
-      </div>
-      <div className="menuCon">
-        <div className="leftMenu">
-          <LeftMenu mode="horizontal" />
+    <>
+      <nav className="menuBar">
+        <div className="logo">
+          <a className="logo_img" href="/">SocialHub</a>
         </div>
-        <div className="rightMenu">
-          <RightMenu mode="horizontal" />
+        <div className="menuCon">
+          <div className="leftMenu">
+            <LeftMenu />
+          </div>
+          <div className="rightMenu">
+            <RightMenu />
+          </div>
         </div>
-        <Button className="barsMenu" type="primary" onClick={showDrawer}>
-          <MenuFoldOutlined type="align-right" />
-        </Button>
-        <Drawer
-          title="SocialHub"
-          placement="right"
-          closable={true}
-          onClose={onClose}
-          visible={visible}
-        >
-          <LeftMenu onClose={onClose} mode="inline" />
-          <RightMenu onClose={onClose} mode="inline" />
-        </Drawer>
-      </div>
-    </nav>
+      </nav>
+      <nav className="mobile_bar">
+        <MobileMenu />
+      </nav>
+    </>
   );
 };
 
